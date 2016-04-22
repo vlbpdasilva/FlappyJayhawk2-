@@ -183,7 +183,7 @@ def pipe_collisions_top(bird,pipes):
     
 def pipe_collisions_bot(bird,pipes):
     """Takes in bottom pipes and the bird and returns true if there is a collision"""
-    if bird.y > pipes.y and (bird.x+50 > pipes.x and bird.x-30 < pipes.x):
+    if bird.y > (pipes.y-50) and (bird.x+50 > pipes.x and bird.x-30 < pipes.x):
         return True
     return bird.colliderect(pipes)
     
