@@ -22,10 +22,10 @@ Python documentation regarding classes: https://docs.python.org/2/tutorial/class
 
 """
 
-#Import
+#Import
 import sys, pygame, time, os
 from random import randint
-from Jayhawk import *
+from Jayhawk import *
 from Pipe import *
 from Background import *
 
@@ -194,7 +194,6 @@ def gameLoop():
     """
     gameOver = False
     gameExit = False
-    isGoingUp = False
     
     images = load_images();
 
@@ -210,23 +209,7 @@ def gameLoop():
     delayBeforeNextPipeIncr = 0;
     
     #Definition of the jayhawk object and its corresponding rect
-    #jayhawk = images['jayhawk']
-    #jayhawk = pygame.transform.scale(jayhawk, (60, 60))
-    #jayrect = jayhawk.get_rect()
-    #jayrect = jayrect.move(80, 200)
     jayhawk = Jayhawk(80,200,(60,60),images['jayhawk'])
-
-    #Jayhawk speeds going up and down
-    up_speed = -22;
-    down_speed = 2;
-    
-    """
-    Counters for up and down movement
-    These counters allow for the changing of speed according to length of movement of the Jayhawk
-    Generates effect of acceleration
-    """
-    up_counter = 0;
-    down_counter = 0;
     
     #Random pipe declaration for testing
     pip = images['pipe']
@@ -255,51 +238,7 @@ def gameLoop():
                     #isGoingUp = True
                     #up_counter = 0
                     jayhawk.jump()
-                    
-        """
-        The following IF statement controls the entire movement of the Jayhawk while it's going up.
-        The counter is used to control speed, giving the user a feeling of acceleration.
-        
-        if(isGoingUp):
-            jayrect = jayrect.move(0, (up_speed/2))
-            up_counter += 1
-            down_counter = 0        
-            if(up_counter == 1):
-                up_speed = -16
-            elif(up_counter == 2):
-                up_speed = -12
-            elif(up_counter == 3):
-                up_speed = -10    
-            elif(up_counter == 4):
-                up_speed = -6           
-            elif(up_counter == 5):
-                up_speed = -4         
-            elif(up_counter == 6):
-                up_speed = -2           
-            elif(up_counter > 6):
-                isGoingUp = False
-                up_counter = 0
-                up_speed = -22 
-                
-        The following IF statement controls the entire movement of the Jayhawk while it's going down.
-        The counter is used to control speed, giving the user a feeling of acceleration.
-        
-        else:
-            jayrect = jayrect.move(0, (down_speed)/8)            
-            down_counter += 1
-            up_counter = 0            
-            if(down_counter == 1):
-                down_speed = 4            
-            elif(down_counter == 2):
-                down_speed = 6            
-            elif(down_counter == 3):
-                down_speed = 10            
-            elif(down_counter == 4):
-                down_speed = 12            
-            elif(down_counter == 5):
-                down_speed = 16            
-            elif(down_counter > 5):
-                down_speed = 22"""
+                   
         jayhawk.updatePosition()
                 
         #Keeps the Jayhawk in screen for testing
@@ -333,7 +272,6 @@ def gameLoop():
                 pipeList.pop(0)
                 
         #Draw Jayhawk
-        #screen.blit(jayhawk, jayrect)
         screen.blit(jayhawk.image, jayhawk.rect)
 
         #Implements collisions
@@ -380,7 +318,6 @@ def gameLoop():
         #Updates screen and implements delay
         pygame.display.update()
         pygame.display.flip()
-        #pygame.time.delay(7)
         clock.tick(FPS)
 
 def main():
