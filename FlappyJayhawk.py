@@ -9,9 +9,7 @@ Basic controls:
 From the menu, press the spacebar to start game. Use the up arrow to control the Jayhawk up.
 Hitting one of the moving blocks causes you to lose. Then, the user can press 'c' to restart 
 or Escape to close the game.
-
 Sources used:_____________________
-
 Official Pygame documentation: http://www.pygame.org/docs/
 Youtube videos available at https://www.youtube.com/playlist?list=PL6gx4Cwl9DGAjkwJocj7vlc_mFU-4wXJq
 Pipe image from http://vignette3.wikia.nocookie.net/fantendo/images/0/06/RocketPipes.png/revision/latest?cb=20100430132034
@@ -19,10 +17,9 @@ Background obtained from https://peukalo.wordpress.com/tag/super-mario/
 Github repository used for help with Pygame implementations: https://github.com/TimoWilken/flappy-bird-pygame
 Pygame clock documentation: http://www.geon.wz.cz/pygame/ref/pygame_time.html
 Python documentation regarding classes: https://docs.python.org/2/tutorial/classes.html
-
 """
 
-#Import
+#Import
 import sys, pygame, time, os
 from random import randint
 from Jayhawk import *
@@ -51,9 +48,6 @@ FPS = 120
 smallFont = pygame.font.SysFont("comicsansms", 14)
 medFont = pygame.font.SysFont("comicsansms", 25)
 largeFont = pygame.font.SysFont("comicsansms", 50)
-
-#Difficulty setting
-difficulty = 1;
 
 def load_images():
     """Load all images required by the game and return a dict of them.
@@ -186,9 +180,14 @@ def pipe_collisions_top(bird,pipes):
     
 def pipe_collisions_bot(bird,pipes):
     """Takes in bottom pipes and the bird and returns true if there is a collision"""
-    if bird.y > (pipes.y-50) and (bird.x+50 > pipes.x and bird.x-30 < pipes.x):
+    if bird.y > pipes.y and (bird.x+50 > pipes.x and bird.x-30 < pipes.x):
         return True
     return bird.colliderect(pipes)
+
+def pipe_passed(bird,pipes):
+    """Pass pipe and increment score"""
+    if bird.y > pipes.y and (bird.x+50 > pipes.x and bird.x-30 < pipes.x):
+        return True
     
 def gameLoop():
     """
@@ -222,6 +221,8 @@ def gameLoop():
 
     #Rect declaration of screen
     screenrect = screen.get_rect()
+
+    score = 0
     
     while not gameExit:
         for event in pygame.event.get():
@@ -241,11 +242,10 @@ def gameLoop():
                     #isGoingUp = True
                     #up_counter = 0
                     jayhawk.jump()
-                   
+                    
         jayhawk.updatePosition()
                 
         #Keeps the Jayhawk in screen for testing
-        #jayrect.clamp_ip(screenrect)
         jayhawk.clamp()
         
 
@@ -281,13 +281,20 @@ def gameLoop():
         for pipeElement in pipeList:
             botPipeRect = pipeElement.rect_bot
             topPipeRect = pipeElement.rect_top
-            #if (pipe_collisions_top(jayrect,topPipeRect)):
             if (pipe_collisions_top(jayhawk.rect,topPipeRect)):
                 gameOver = True
-            #if (pipe_collisions_bot(jayrect,botPipeRect)):
             if (pipe_collisions_bot(jayhawk.rect,botPipeRect)):   
                 gameOver = True
 
+        #Implements score
+        for pipeElement in pipeList:
+            if (pipe_passed(jayhawk.rect,pipeElement.rect_top)):
+                score = score + 1
+                
+        message_to_screen(str(score),
+                          blue,
+                          -200,
+                          "large")
             
         while gameOver == True:
             #Draw background
@@ -317,14 +324,6 @@ def gameLoop():
                         gameExit = True
                         pygame.quit()
                         sys.exit
-                    if event.key == pygame.K_1:
-                        difficulty = 1;
-                    if event.key == pygame.K_2:
-                        difficulty = 2;
-                    if event.key == pygame.K_3:
-                        difficulty = 3;
-                    
-                        
         
         #Updates screen and implements delay
         pygame.display.update()
