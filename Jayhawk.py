@@ -1,4 +1,6 @@
 import pygame
+from FlappyJayhawk import *
+
 class Jayhawk(pygame.sprite.Sprite):
     """The Jayhawk that the player will be controlling.
     The Jayhawk will ascend or descend and its main objective is to avoid
@@ -108,7 +110,7 @@ class Jayhawk(pygame.sprite.Sprite):
         """
         Jayhawk.isGoingUp = True
         Jayhawk.up_counter = 0
-
+        
     def clamp(self):
         """ Clamp the Jayhawk to stay within the screen's boundaries.
         This is done rather than calling clamp_ip() because returning the Jayhawk class's rect does not

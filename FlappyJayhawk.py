@@ -22,7 +22,7 @@ Python documentation regarding classes: https://docs.python.org/2/tutorial/class
 
 """
 
-#Import
+#Import
 import sys, pygame, time, os
 from random import randint
 from Jayhawk import *
@@ -52,8 +52,7 @@ smallFont = pygame.font.SysFont("comicsansms", 14)
 medFont = pygame.font.SysFont("comicsansms", 25)
 largeFont = pygame.font.SysFont("comicsansms", 50)
 
-#Difficulty setting
-difficulty = 1;
+
 
 def load_images():
     """Load all images required by the game and return a dict of them.
@@ -79,11 +78,9 @@ def load_images():
 
     return {'jayhawk': load_image('jayhawk.png'),
             'background': load_image('repeatTest_smw.png'),
+            'background2': load_image('background2.png'),
+            'background3': load_image('background3.png'),
             'pipe': load_image('pipe.png')
-            # images for animating the flapping bird -- animated GIFs are
-            # not supported in pygame
-            #'bird-wingup': load_image('bird_wing_up.png'),
-            #'bird-wingdown': load_image('bird_wing_down.png')
             }
 
 def start_menu():
@@ -222,6 +219,12 @@ def gameLoop():
 
     #Rect declaration of screen
     screenrect = screen.get_rect()
+
+    #Initial difficulty setting
+    difficulty = 1;
+
+    #Screen fill color variable
+    fill = (255, 231, 181);
     
     while not gameExit:
         for event in pygame.event.get():
@@ -237,19 +240,34 @@ def gameLoop():
                     pygame.quit()
                     sys.exit
                 if event.key == pygame.K_UP: 
-                    # listens for UP ARROW key. Triggers isGoingUp to be True
-                    #isGoingUp = True
-                    #up_counter = 0
                     jayhawk.jump()
-                   
+                if event.key == pygame.K_1:
+                        difficulty = 1;
+                if event.key == pygame.K_2:
+                        difficulty = 2;
+                if event.key == pygame.K_3:
+                        difficulty = 3;
+
+        if difficulty == 2:
+            ### background image from http://freetems.net/files/2143_t2.png
+            back = Background(images['background2'], images['background2'].get_size(), height);
+            fill = (17, 131, 255);
+
+        elif difficulty == 3:
+            ### background image from https://kanimate.files.wordpress.com/2015/05/3.jpg
+            back = Background(images['background3'], images['background3'].get_size(), height);
+
+        elif difficulty == 1:
+            back = Background(images['background'], images['background'].get_size(), height);
+            fill = (255, 231, 181);
+
         jayhawk.updatePosition()
                 
         #Keeps the Jayhawk in screen for testing
         #jayrect.clamp_ip(screenrect)
-        jayhawk.clamp()
-        
+        jayhawk.clamp()        
 
-        screen.fill((255, 231, 181))
+        screen.fill(fill)
 
         #Draw background
         screen.blit(back.image, back.rect)
@@ -317,13 +335,7 @@ def gameLoop():
                         gameExit = True
                         pygame.quit()
                         sys.exit
-                    if event.key == pygame.K_1:
-                        difficulty = 1;
-                    if event.key == pygame.K_2:
-                        difficulty = 2;
-                    if event.key == pygame.K_3:
-                        difficulty = 3;
-                    
+                                        
                         
         
         #Updates screen and implements delay
