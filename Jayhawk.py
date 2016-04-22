@@ -116,8 +116,8 @@ class Jayhawk(pygame.sprite.Sprite):
         """
         if(self.y < 0):
             self.y = 0
-        elif(self.y > 450):
-            self.y = 450
+        elif(self.y > 440):
+            self.y = 440
     
     @property
     def image(self):
