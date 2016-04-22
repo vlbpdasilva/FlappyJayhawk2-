@@ -52,6 +52,9 @@ smallFont = pygame.font.SysFont("comicsansms", 14)
 medFont = pygame.font.SysFont("comicsansms", 25)
 largeFont = pygame.font.SysFont("comicsansms", 50)
 
+#Difficulty setting
+difficulty = 1;
+
 def load_images():
     """Load all images required by the game and return a dict of them.
     The returned dict has the following keys:
@@ -314,6 +317,14 @@ def gameLoop():
                         gameExit = True
                         pygame.quit()
                         sys.exit
+                    if event.key == pygame.K_1:
+                        difficulty = 1;
+                    if event.key == pygame.K_2:
+                        difficulty = 2;
+                    if event.key == pygame.K_3:
+                        difficulty = 3;
+                    
+                        
         
         #Updates screen and implements delay
         pygame.display.update()
