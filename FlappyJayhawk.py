@@ -186,7 +186,7 @@ def pipe_collisions_bot(bird,pipes):
 
 def pipe_passed(bird,pipes):
     """Pass pipe and increment score"""
-    if bird.y > pipes.y and (bird.x+50 > pipes.x and bird.x-30 < pipes.x):
+    if bird.y > pipes.y and (bird.x-30 == pipes.x):
         return True
     
 def gameLoop():
