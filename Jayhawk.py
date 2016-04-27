@@ -26,9 +26,12 @@ class Jayhawk(pygame.sprite.Sprite):
 
     #is the Jayhawk moving up (jumping)?
     isGoingUp = False
+    isJumping = False
     #Jayhawk speeds going up and down
     up_speed = -22
     down_speed = 2
+    reg_speed = 20 / 3
+    gravity_accel = 4 / 4
     """
     Counters for up and down movement
     These counters allow for the changing of speed according to length of movement of the Jayhawk
@@ -48,7 +51,7 @@ class Jayhawk(pygame.sprite.Sprite):
         super(Jayhawk, self).__init__()
         self.x = x
         self.y = y
-        self.Jayhawk_image = image
+        self.Jayhawk_image = image  
         self.Jayhawk_image = pygame.transform.scale(self.Jayhawk_image, scale)
         self.Jayhawk_mask = pygame.mask.from_surface(self.Jayhawk_image)
 
@@ -64,7 +67,7 @@ class Jayhawk(pygame.sprite.Sprite):
         The following ELSE statement controls the entire movement of the Jayhawk while it's going Jayhawk.down.
         The counter is used to control speed, giving the user a feeling of acceleration.
         """
-        if(Jayhawk.isGoingUp):
+        """if(Jayhawk.isGoingUp):
             self.y = self.y + Jayhawk.up_speed/2
             Jayhawk.up_counter += 1
             Jayhawk.down_counter = 0        
@@ -99,7 +102,20 @@ class Jayhawk(pygame.sprite.Sprite):
             elif(Jayhawk.down_counter == 5):
                 Jayhawk.down_speed = 16            
             elif(Jayhawk.down_counter > 5):
-                Jayhawk.down_speed = 22
+                Jayhawk.down_speed = 22"""
+
+        self.gravity()
+        self.y = self.y + Jayhawk.reg_speed
+
+    def gravity(self):
+        if(Jayhawk.isJumping):
+            Jayhawk.reg_speed = -40 / 3
+            Jayhawk.isJumping = False
+        else:
+            Jayhawk.reg_speed = Jayhawk.reg_speed + Jayhawk.gravity_accel
+
+        if(Jayhawk.reg_speed > 20 / 2):
+            Jayhawk.reg_speed = 20 / 2
 
     def jump(self):
         """ The Jayhawk jumps up thus moving up.
@@ -108,6 +124,7 @@ class Jayhawk(pygame.sprite.Sprite):
         """
         Jayhawk.isGoingUp = True
         Jayhawk.up_counter = 0
+        Jayhawk.isJumping = True
 
     def clamp(self):
         """ Clamp the Jayhawk to stay within the screen's boundaries.

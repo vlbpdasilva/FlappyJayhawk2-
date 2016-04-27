@@ -33,10 +33,12 @@ class Pipe(pygame.sprite.Sprite):
         self.y = randint(25, 275)
 
         self.Pipe_image_top = image
+        self.Pipe_image_top = self.Pipe_image_top.convert()
         self.Pipe_image_top = pygame.transform.rotate(self.Pipe_image_top, 180)
         self.Pipe_mask_top = pygame.mask.from_surface(self.Pipe_image_top)
         
         self.Pipe_image_bot = image
+        self.Pipe_image_bot = self.Pipe_image_bot.convert()
         self.Pipe_mask_bot = pygame.mask.from_surface(self.Pipe_image_bot)
 
 
@@ -46,7 +48,7 @@ class Pipe(pygame.sprite.Sprite):
         Get whether the pipe has hit the boundary -600 and stopped scrolling (and reset).
         When stopped scrolling, this should be the signal to pop the pipe off the pipeList.
         """
-        self.x = self.x - 1
+        self.x = self.x - 2
         if(self.x + 600 == 0):
             self.x = self.reset_x
             self.y = randint(25, 375)

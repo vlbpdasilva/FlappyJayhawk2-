@@ -42,7 +42,7 @@ red = (255, 0, 0)
 
 #Clock Implementation
 clock = pygame.time.Clock()
-FPS = 120
+FPS = 60
 
 #Font Definitions and sizes
 smallFont = pygame.font.SysFont("comicsansms", 14)
@@ -180,13 +180,13 @@ def pipe_collisions_top(bird,pipes):
     
 def pipe_collisions_bot(bird,pipes):
     """Takes in bottom pipes and the bird and returns true if there is a collision"""
-    if bird.y > pipes.y and (bird.x+50 > pipes.x and bird.x-30 < pipes.x):
+    if bird.y + 60 > pipes.y and (bird.x+50 > pipes.x and bird.x-30 < pipes.x):
         return True
     return bird.colliderect(pipes)
 
 def pipe_passed(bird,pipes):
     """Pass pipe and increment score"""
-    if bird.y > pipes.y and (bird.x+30 == pipes.x):
+    if bird.y > pipes.y and (bird.x + 30 == pipes.x):
         return True
     
 def gameLoop():
@@ -297,12 +297,26 @@ def gameLoop():
                           "large")
             
         while gameOver == True:
+            
+            screen.fill((255, 231, 181))
             #Draw background
             screen.blit(back.image, back.rect)
             screen.blit(back.image, back.rect2)
             screen.blit(back.image, back.rect3)
             #Make background scroll
-            back.scroll()
+            #back.scroll()
+
+            #Draw Jayhawk
+            jayhawk.updatePosition()
+            jayhawk.clamp()
+            screen.blit(jayhawk.image, jayhawk.rect)
+
+            #Draw final pipe location
+            for pipeElement in pipeList:
+                screen.blit(pipeElement.image_top, pipeElement.rect_top)
+                screen.blit(pipeElement.image_bot, pipeElement.rect_bot)
+
+            #Draw message
             message_to_screen("Game Over",
                             blue,
                             -50,
@@ -311,8 +325,9 @@ def gameLoop():
                             blue,
                             50,
                             "small")
-            pygame.display.update()
-            pygame.time.delay(7)
+            pygame.display.update()          
+            #pygame.time.delay(7)
+            clock.tick(FPS)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     gameOver = False
