@@ -9,7 +9,9 @@ Basic controls:
 From the menu, press the spacebar to start game. Use the up arrow to control the Jayhawk up.
 Hitting one of the moving blocks causes you to lose. Then, the user can press 'c' to restart 
 or Escape to close the game.
+
 Sources used:_____________________
+
 Official Pygame documentation: http://www.pygame.org/docs/
 Youtube videos available at https://www.youtube.com/playlist?list=PL6gx4Cwl9DGAjkwJocj7vlc_mFU-4wXJq
 Pipe image from http://vignette3.wikia.nocookie.net/fantendo/images/0/06/RocketPipes.png/revision/latest?cb=20100430132034
@@ -17,6 +19,7 @@ Background obtained from https://peukalo.wordpress.com/tag/super-mario/
 Github repository used for help with Pygame implementations: https://github.com/TimoWilken/flappy-bird-pygame
 Pygame clock documentation: http://www.geon.wz.cz/pygame/ref/pygame_time.html
 Python documentation regarding classes: https://docs.python.org/2/tutorial/classes.html
+
 """
 
 #Import
@@ -49,6 +52,8 @@ smallFont = pygame.font.SysFont("comicsansms", 14)
 medFont = pygame.font.SysFont("comicsansms", 25)
 largeFont = pygame.font.SysFont("comicsansms", 50)
 
+
+
 def load_images():
     """Load all images required by the game and return a dict of them.
     The returned dict has the following keys:
@@ -73,11 +78,9 @@ def load_images():
 
     return {'jayhawk': load_image('jayhawk.png'),
             'background': load_image('repeatTest_smw.png'),
+            'background2': load_image('background2.png'),
+            'background3': load_image('background3.png'),
             'pipe': load_image('pipe.png')
-            # images for animating the flapping bird -- animated GIFs are
-            # not supported in pygame
-            #'bird-wingup': load_image('bird_wing_up.png'),
-            #'bird-wingdown': load_image('bird_wing_down.png')
             }
 
 def start_menu():
@@ -183,12 +186,12 @@ def pipe_collisions_bot(bird,pipes):
     if bird.y + 60 > pipes.y and (bird.x+50 > pipes.x and bird.x-30 < pipes.x):
         return True
     return bird.colliderect(pipes)
-
+    
 def pipe_passed(bird,pipes):
     """Pass pipe and increment score"""
-    if bird.y > pipes.y and (bird.x + 30 == pipes.x):
-        return True
-    
+    if bird.y > pipes.y and (bird.x+30 == pipes.x):
+        return True   
+        
 def gameLoop():
     """
     Runs the game loop until users lose by allowing the jayhawk to collide with the pipes.
@@ -222,6 +225,13 @@ def gameLoop():
     #Rect declaration of screen
     screenrect = screen.get_rect()
 
+    #Initial difficulty setting
+    difficulty = 1;
+
+    #Screen fill color variable
+    fill = (255, 231, 181);
+
+    #initialize score
     score = 0
     
     while not gameExit:
@@ -238,18 +248,28 @@ def gameLoop():
                     pygame.quit()
                     sys.exit
                 if event.key == pygame.K_UP: 
-                    # listens for UP ARROW key. Triggers isGoingUp to be True
-                    #isGoingUp = True
-                    #up_counter = 0
                     jayhawk.jump()
-                    
+                if event.key == pygame.K_1:
+                        difficulty = 1;
+                        back = Background(images['background'], images['background'].get_size(), height);
+                        fill = (255, 231, 181);
+                if event.key == pygame.K_2:
+                        difficulty = 2;
+                        ### background image from http://freetems.net/files/2143_t2.png
+                        back = Background(images['background2'], images['background2'].get_size(), height);
+                        fill = (17, 131, 255);
+                if event.key == pygame.K_3:
+                        difficulty = 3;
+                        ### background image from https://kanimate.files.wordpress.com/2015/05/3.jpg
+                        back = Background(images['background3'], images['background3'].get_size(), height);           
+
         jayhawk.updatePosition()
                 
         #Keeps the Jayhawk in screen for testing
-        jayhawk.clamp()
-        
+        #jayrect.clamp_ip(screenrect)
+        jayhawk.clamp()        
 
-        screen.fill((255, 231, 181))
+        screen.fill(fill)
 
         #Draw background
         screen.blit(back.image, back.rect)
@@ -281,70 +301,71 @@ def gameLoop():
         for pipeElement in pipeList:
             botPipeRect = pipeElement.rect_bot
             topPipeRect = pipeElement.rect_top
+            #if (pipe_collisions_top(jayrect,topPipeRect)):
             if (pipe_collisions_top(jayhawk.rect,topPipeRect)):
                 gameOver = True
+            #if (pipe_collisions_bot(jayrect,botPipeRect)):
             if (pipe_collisions_bot(jayhawk.rect,botPipeRect)):   
                 gameOver = True
 
-        #Implements score
+
+	#Implements score
         for pipeElement in pipeList:
             if (pipe_passed(jayhawk.rect,pipeElement.rect_top)):
                 score = score + 1
-                
         message_to_screen(str(score),
-                          blue,
-                          -200,
-                          "large")
-            
+			blue,
+			-200,
+			"large")    
         while gameOver == True:
-            
-            screen.fill((255, 231, 181))
-            #Draw background
+                       
+            screen.fill(fill)
+            #Draw background	
             screen.blit(back.image, back.rect)
             screen.blit(back.image, back.rect2)
-            screen.blit(back.image, back.rect3)
-            #Make background scroll
-            #back.scroll()
-
+            screen.blit(back.image, back.rect3)		           
+            #Make background scroll		              
+            back.scroll()	
+		
             #Draw Jayhawk
             jayhawk.updatePosition()
             jayhawk.clamp()
             screen.blit(jayhawk.image, jayhawk.rect)
-
+            
             #Draw final pipe location
             for pipeElement in pipeList:
-                screen.blit(pipeElement.image_top, pipeElement.rect_top)
-                screen.blit(pipeElement.image_bot, pipeElement.rect_bot)
-
+                    screen.blit(pipeElement.image_top, pipeElement.rect_top)
+                    screen.blit(pipeElement.image_bot, pipeElement.rect_bot)
+            
             #Draw message
             message_to_screen(str(score),
                             blue,
                             -200,
-                            "large")            
+                            "large")
             message_to_screen("Game Over",
                             blue,
                             -50,
-                            "large")
-            message_to_screen("Press c to play again",
-                            blue,
-                            50,
-                            "small")
-            pygame.display.update()          
-            #pygame.time.delay(7)
+                            "large")		     
+            message_to_screen("Press c to play again",	
+                            blue,		                            
+                            50,		                             
+                            "small")	
+                          
+            pygame.display.update()
             clock.tick(FPS)
             for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    gameOver = False
-                    gameExit = True
-                    pygame.quit()
-                    sys.exit
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_c:
-                        gameLoop()
-                    if event.key == pygame.K_ESCAPE:
-                        gameExit = True
-                        pygame.quit()
-                        sys.exit
+                    if event.type == pygame.QUIT:
+                            gameOver = False
+                            gameExit = True
+                    if event.type == pygame.KEYDOWN:
+                            if event.key == pygame.K_c:
+                                    gameLoop()
+                            if event.key == pygame.K_ESCAPE:
+                                    gameExit = True
+                                    pygame.quit()
+                                    sys.exit
+                                        
+                        
         
         #Updates screen and implements delay
         pygame.display.update()
