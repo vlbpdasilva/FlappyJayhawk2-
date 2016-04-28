@@ -15,6 +15,7 @@ class Background(pygame.sprite.Sprite):
         self.x = 0
         self.BackgroundDelay = 0
         self.Background_image = image
+        self.Background_image = self.Background_image.convert()
         self.BackgroundWidth, self.BackgroundHeight = size
         self.y = windowHeight - self.BackgroundHeight
 
