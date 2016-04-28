@@ -45,7 +45,7 @@ red = (255, 0, 0)
 
 #Clock Implementation
 clock = pygame.time.Clock()
-FPS = 120
+FPS = 60
 
 #Font Definitions and sizes
 smallFont = pygame.font.SysFont("comicsansms", 14)
@@ -183,10 +183,15 @@ def pipe_collisions_top(bird,pipes):
     
 def pipe_collisions_bot(bird,pipes):
     """Takes in bottom pipes and the bird and returns true if there is a collision"""
-    if bird.y > (pipes.y-50) and (bird.x+50 > pipes.x and bird.x-30 < pipes.x):
+    if bird.y + 60 > pipes.y and (bird.x+50 > pipes.x and bird.x-30 < pipes.x):
         return True
     return bird.colliderect(pipes)
     
+def pipe_passed(bird,pipes):
+    """Pass pipe and increment score"""
+    if bird.y > pipes.y and (bird.x+30 == pipes.x):
+        return True   
+        
 def gameLoop():
     """
     Runs the game loop until users lose by allowing the jayhawk to collide with the pipes.
@@ -306,35 +311,62 @@ def gameLoop():
             if (pipe_collisions_bot(jayhawk.rect,botPipeRect)):   
                 gameOver = True
 
-            
+
+	#Implements score
+        for pipeElement in pipeList:
+             	if (pipe_passed(jayhawk.rect,pipeElement.rect_top)):
+                 	score = score + 1
+        message_to_screen(str(score),
+			blue,
+			-200,
+			"large")    
         while gameOver == True:
-            #Draw background
-            screen.blit(back.image, back.rect)
-            screen.blit(back.image, back.rect2)
-            screen.blit(back.image, back.rect3)
-            #Make background scroll
-            back.scroll()
-            message_to_screen("Game Over",
-                            blue,
-                            -50,
-                            "large")
-            message_to_screen("Press c to play again",
-                            blue,
-                            50,
-                            "small")
-            pygame.display.update()
-            pygame.time.delay(7)
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    gameOver = False
-                    gameExit = True
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_c:
-                        gameLoop()
-                    if event.key == pygame.K_ESCAPE:
-                        gameExit = True
-                        pygame.quit()
-                        sys.exit
+                       
+		screen.fill((255, 231, 181))
+		#Draw background	
+		screen.blit(back.image, back.rect)
+		screen.blit(back.image, back.rect2)
+		screen.blit(back.image, back.rect3)		           
+		#Make background scroll		              
+		back.scroll()	
+		
+		#Draw Jayhawk
+		jayhawk.updatePosition()
+		jayhawk.clamp()
+		screen.blit(jayhawk.image, jayhawk.rect)
+		
+		#Draw final pipe location
+		for pipeElement in pipeList:
+			screen.blit(pipeElement.image_top, pipeElement.rect_top)
+			screen.blit(pipeElement.image_bot, pipeElement.rect_bot)
+		
+		#Draw message
+		message_to_screen(str(score),
+				blue,
+				-200,
+				"large")
+		message_to_screen("Game Over",
+				blue,
+				-50,
+				"large")		     
+             	message_to_screen("Press c to play again",	
+				blue,		                            
+				50,		                             
+				"small")	
+                              
+		pygame.display.update()
+		clock.tick(FPS)
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				gameOver = False
+				gameExit = True
+			if event.type == pygame.KEYDOWN:
+				if event.key == pygame.K_c:
+					gameLoop()
+				if event.key == pygame.K_ESCAPE:
+					gameExit = True
+					pygame.quit()
+					sys.exit
                                         
                         
         
