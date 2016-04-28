@@ -363,6 +363,8 @@ def gameLoop():
                     if event.type == pygame.QUIT:
                             gameOver = False
                             gameExit = True
+                            pygame.quit()
+                            sys.exit
                     if event.type == pygame.KEYDOWN:
                             if event.key == pygame.K_c:
                                     gameLoop()
