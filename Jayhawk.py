@@ -53,6 +53,7 @@ class Jayhawk(pygame.sprite.Sprite):
         self.y = y
         self.Jayhawk_image = image  
         self.Jayhawk_image = pygame.transform.scale(self.Jayhawk_image, scale)
+        self.original = self.Jayhawk_image
         self.Jayhawk_mask = pygame.mask.from_surface(self.Jayhawk_image)
 
     def updatePosition(self):
@@ -106,6 +107,9 @@ class Jayhawk(pygame.sprite.Sprite):
 
         self.gravity()
         self.y = self.y + Jayhawk.reg_speed
+        #update rotation
+        self.Jayhawk_image = self.original
+        self.Jayhawk_image = self.rot_center(self.Jayhawk_image, -1 * Jayhawk.reg_speed)
 
     def gravity(self):
         if(Jayhawk.isJumping):
@@ -116,6 +120,16 @@ class Jayhawk(pygame.sprite.Sprite):
 
         if(Jayhawk.reg_speed > 20 / 2):
             Jayhawk.reg_speed = 20 / 2
+
+    def rot_center(self, image, angle):
+        """rotate an image while keeping its center and size
+        Source: http://pygame.org/wiki/RotateCenter?parent= """
+        orig_rect = image.get_rect()
+        rot_image = pygame.transform.rotate(image, angle)
+        rot_rect = orig_rect.copy()
+        rot_rect.center = rot_image.get_rect().center
+        rot_image = rot_image.subsurface(rot_rect).copy()
+        return rot_image
 
     def jump(self):
         """ The Jayhawk jumps up thus moving up.
