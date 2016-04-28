@@ -317,6 +317,10 @@ def gameLoop():
                 screen.blit(pipeElement.image_bot, pipeElement.rect_bot)
 
             #Draw message
+            message_to_screen(str(score),
+                            blue,
+                            -200,
+                            "large")            
             message_to_screen("Game Over",
                             blue,
                             -50,
@@ -332,6 +336,8 @@ def gameLoop():
                 if event.type == pygame.QUIT:
                     gameOver = False
                     gameExit = True
+                    pygame.quit()
+                    sys.exit
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_c:
                         gameLoop()
