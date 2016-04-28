@@ -251,23 +251,17 @@ def gameLoop():
                     jayhawk.jump()
                 if event.key == pygame.K_1:
                         difficulty = 1;
+                        back = Background(images['background'], images['background'].get_size(), height);
+                        fill = (255, 231, 181);
                 if event.key == pygame.K_2:
                         difficulty = 2;
+                        ### background image from http://freetems.net/files/2143_t2.png
+                        back = Background(images['background2'], images['background2'].get_size(), height);
+                        fill = (17, 131, 255);
                 if event.key == pygame.K_3:
                         difficulty = 3;
-
-        if difficulty == 2:
-            ### background image from http://freetems.net/files/2143_t2.png
-            back = Background(images['background2'], images['background2'].get_size(), height);
-            fill = (17, 131, 255);
-
-        elif difficulty == 3:
-            ### background image from https://kanimate.files.wordpress.com/2015/05/3.jpg
-            back = Background(images['background3'], images['background3'].get_size(), height);
-
-        elif difficulty == 1:
-            back = Background(images['background'], images['background'].get_size(), height);
-            fill = (255, 231, 181);
+                        ### background image from https://kanimate.files.wordpress.com/2015/05/3.jpg
+                        back = Background(images['background3'], images['background3'].get_size(), height);           
 
         jayhawk.updatePosition()
                 
@@ -325,7 +319,7 @@ def gameLoop():
 			"large")    
         while gameOver == True:
                        
-            screen.fill((255, 231, 181))
+            screen.fill(fill)
             #Draw background	
             screen.blit(back.image, back.rect)
             screen.blit(back.image, back.rect2)
