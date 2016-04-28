@@ -32,6 +32,11 @@ from Background import *
 #Initialization
 pygame.init()
 
+#Initialization of sound tools
+#Taken from http://thepythongamebook.com/en:pygame:step010
+#All sounds created using http://www.bfxr.net/
+pygame.mixer.pre_init(44100, -16, 2, 2048)
+
 #Screen Initializations
 pygame.display.set_caption("Flappy Jayhawk")
 size = width, height = (600, 500)
@@ -233,6 +238,14 @@ def gameLoop():
 
     #initialize score
     score = 0
+
+    #Load game sounds
+    try:
+        #pygame.mixer.music.load(os.path.join('data', 'an-turr.ogg'))#load music
+        jump = pygame.mixer.Sound(os.path.join('Sounds','Jump.ogg'))  #load sound
+        fail = pygame.mixer.Sound(os.path.join('Sounds','Fail.ogg'))  #load sound
+    except:
+        raise UserWarning, "could not load or play soundfiles in 'Sounds' folder"
     
     while not gameExit:
         for event in pygame.event.get():
@@ -249,6 +262,7 @@ def gameLoop():
                     sys.exit
                 if event.key == pygame.K_UP: 
                     jayhawk.jump()
+                    jump.play();
                 if event.key == pygame.K_1:
                         difficulty = 1;
                         back = Background(images['background'], images['background'].get_size(), height);
@@ -304,10 +318,11 @@ def gameLoop():
             #if (pipe_collisions_top(jayrect,topPipeRect)):
             if (pipe_collisions_top(jayhawk.rect,topPipeRect)):
                 gameOver = True
+                fail.play();
             #if (pipe_collisions_bot(jayrect,botPipeRect)):
             if (pipe_collisions_bot(jayhawk.rect,botPipeRect)):   
                 gameOver = True
-
+                fail.play();
 
 	#Implements score
         for pipeElement in pipeList:
