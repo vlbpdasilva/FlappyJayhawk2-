@@ -58,7 +58,9 @@ class objRef():
     Calling a function of a module from a string with the function's name in Python can be compressed to: result = getattr(foo, 'bar')()
     Source: http://stackoverflow.com/a/3071
     Python using getattr to call function with variable parameters You could try something like: getattr(foo, bar)(*params)
-    Source: http://stackoverflow.com/a/11781292"""
+    Source: http://stackoverflow.com/a/11781292
+
+    Note: cannot be used to get instance values of an object"""
     def __init__(self, obj): self.obj = obj
     def get(self):    return self.obj
     def set(self, obj):      self.obj = obj
@@ -137,7 +139,7 @@ def start_menu():
                             "medium")
 
         pygame.display.update()
-        pygame.time.delay(7)
+        clock.tick(FPS)
         
 def game_over():
     """
@@ -202,9 +204,20 @@ def pipe_passed(bird,pipes):
     if bird.y > pipes.y and (bird.x+30 == pipes.x):
         return True   
 
-def objReftest(c):
-    """demo for objRef and calling methods  """
-    c.call('test', [0, 'bar'])
+def difficulty_change(difficulty):
+    if(difficulty == 1):
+        Jayhawk.gravity_accel = 1
+        Pipe.GAP = 200
+    elif(difficulty == 2):
+        Jayhawk.gravity_accel = 2
+        Pipe.GAP = 150
+    elif(difficulty == 3):
+        Jayhawk.gravity_accel = 3
+        Pipe.GAP = 125
+
+"""def objReftest(c):
+    demo for objRef and calling methods  
+    c.call('test', [0, 'bar'])"""
         
 def gameLoop():
     """
@@ -215,6 +228,10 @@ def gameLoop():
     gameExit = False
     
     images = load_images();
+    
+    #Initial difficulty setting
+    #difficulty = 1;
+    difficulty_change(1)
 
     #Scrolling background declaration
     back = Background(images['background'], images['background'].get_size(), height)
@@ -237,17 +254,13 @@ def gameLoop():
     piprect = piprect.move(5,0)
 
     #demo for objRef and calling methods    
-    piplol = objRef(Pipe(images['pipe'], width))
-    piplol.call('test',[42, 'bar'])
-    pipeRef = objRef(pipe)#pipe declared above
-    objReftest(pipeRef)
-    
+    #piplol = objRef(Pipe(images['pipe'], width))
+    #piplol.call('test',[42, 'bar'])
+    #pipRef = objRef(pipe)#pipe declared above
+    #objReftest(pipRef)
 
     #Rect declaration of screen
     screenrect = screen.get_rect()
-
-    #Initial difficulty setting
-    difficulty = 1;
 
     #Screen fill color variable
     fill = (255, 231, 181);
@@ -271,18 +284,21 @@ def gameLoop():
                 if event.key == pygame.K_UP: 
                     jayhawk.jump()
                 if event.key == pygame.K_1:
-                        difficulty = 1;
-                        back = Background(images['background'], images['background'].get_size(), height);
-                        fill = (255, 231, 181);
+                    #difficulty = 1;
+                    difficulty_change(1)
+                    back = Background(images['background'], images['background'].get_size(), height);
+                    fill = (255, 231, 181);
                 if event.key == pygame.K_2:
-                        difficulty = 2;
-                        ### background image from http://freetems.net/files/2143_t2.png
-                        back = Background(images['background2'], images['background2'].get_size(), height);
-                        fill = (17, 131, 255);
+                    #difficulty = 2;
+                    difficulty_change(2)
+                    ### background image from http://freetems.net/files/2143_t2.png
+                    back = Background(images['background2'], images['background2'].get_size(), height);
+                    fill = (17, 131, 255);
                 if event.key == pygame.K_3:
-                        difficulty = 3;
-                        ### background image from https://kanimate.files.wordpress.com/2015/05/3.jpg
-                        back = Background(images['background3'], images['background3'].get_size(), height);           
+                    #difficulty = 3;
+                    difficulty_change(3)
+                    ### background image from https://kanimate.files.wordpress.com/2015/05/3.jpg
+                    back = Background(images['background3'], images['background3'].get_size(), height);           
 
         jayhawk.updatePosition()
                 
