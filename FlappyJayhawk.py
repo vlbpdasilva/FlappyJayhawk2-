@@ -52,7 +52,17 @@ smallFont = pygame.font.SysFont("comicsansms", 14)
 medFont = pygame.font.SysFont("comicsansms", 25)
 largeFont = pygame.font.SysFont("comicsansms", 50)
 
-
+class objRef():
+    """Simulating pointers in python can be done explicitly.
+    Source: http://stackoverflow.com/a/1145848
+    Calling a function of a module from a string with the function's name in Python can be compressed to: result = getattr(foo, 'bar')()
+    Source: http://stackoverflow.com/a/3071
+    Python using getattr to call function with variable parameters You could try something like: getattr(foo, bar)(*params)
+    Source: http://stackoverflow.com/a/11781292"""
+    def __init__(self, obj): self.obj = obj
+    def get(self):    return self.obj
+    def set(self, obj):      self.obj = obj
+    def call(self, methodToCall, params):   return getattr(self.obj, methodToCall)(*params)
 
 def load_images():
     """Load all images required by the game and return a dict of them.
@@ -191,6 +201,10 @@ def pipe_passed(bird,pipes):
     """Pass pipe and increment score"""
     if bird.y > pipes.y and (bird.x+30 == pipes.x):
         return True   
+
+def objReftest(c):
+    """demo for objRef and calling methods  """
+    c.call('test', [0, 'bar'])
         
 def gameLoop():
     """
@@ -221,6 +235,13 @@ def gameLoop():
     pip = pygame.transform.scale(pip, (50, 100))
     piprect = pip.get_rect()
     piprect = piprect.move(5,0)
+
+    #demo for objRef and calling methods    
+    piplol = objRef(Pipe(images['pipe'], width))
+    piplol.call('test',[42, 'bar'])
+    pipeRef = objRef(pipe)#pipe declared above
+    objReftest(pipeRef)
+    
 
     #Rect declaration of screen
     screenrect = screen.get_rect()
@@ -278,7 +299,6 @@ def gameLoop():
         
         #Make background scroll
         back.scroll()
-        
     
         #Generates new pipes by appending them to the end of Pipe array
         delayBeforeNextPipeIncr = delayBeforeNextPipeIncr + 1
@@ -325,18 +345,19 @@ def gameLoop():
             screen.blit(back.image, back.rect2)
             screen.blit(back.image, back.rect3)		           
             #Make background scroll		              
-            back.scroll()	
+            #back.scroll()	
+
+            #Draw final pipe location
+            for pipeElement in pipeList:
+                    screen.blit(pipeElement.image_top, pipeElement.rect_top)
+                    screen.blit(pipeElement.image_bot, pipeElement.rect_bot)
 		
             #Draw Jayhawk
             jayhawk.updatePosition()
             jayhawk.clamp()
             screen.blit(jayhawk.image, jayhawk.rect)
             
-            #Draw final pipe location
-            for pipeElement in pipeList:
-                    screen.blit(pipeElement.image_top, pipeElement.rect_top)
-                    screen.blit(pipeElement.image_bot, pipeElement.rect_bot)
-            
+                        
             #Draw message
             message_to_screen(str(score),
                             blue,

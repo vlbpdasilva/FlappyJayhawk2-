@@ -52,6 +52,12 @@ class Pipe(pygame.sprite.Sprite):
             self.y = randint(25, 375)
             return False
         return True
+
+    def test(self, a, b):
+        """Used together with objRef in FlappyJayhawk.py as a demo"""
+        print a
+        self.y = a
+        print b
     
     @property
     def image_top(self):
