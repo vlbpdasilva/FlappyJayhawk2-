@@ -29,12 +29,15 @@ from Jayhawk import *
 from Pipe import *
 from Background import *
 
+from PowerUp import *
+from grenade_launcher import *
+
 #Initialization
 pygame.init()
 
 #Screen Initializations
 pygame.display.set_caption("Flappy Jayhawk")
-size = width, height = (600, 500)
+size = width, height = (600,500)
 screen = pygame.display.set_mode(size)
 
 #Color Definitions
@@ -267,6 +270,16 @@ def gameLoop():
 
     #initialize score
     score = 0
+    global FPS
+    
+    #poweruptest = PowerUp(blue, (50,50), 20, 0, images['jayhawk'], 'test')
+    #powerup array
+    powerupList = []
+    #powerupList.append(poweruptest)
+    #powerups that have been picked up
+    powerupObtainedList = []
+    poweruptest = grenade_launcher()
+    powerupObtainedList.append(poweruptest)
     
     while not gameExit:
         for event in pygame.event.get():
@@ -299,9 +312,19 @@ def gameLoop():
                     difficulty_change(3)
                     ### background image from https://kanimate.files.wordpress.com/2015/05/3.jpg
                     back = Background(images['background3'], images['background3'].get_size(), height);           
-
+        
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_DOWN]:
+            FPS -= 1
+            if(FPS < 15):
+                FPS = 15
+        else:
+            FPS += 3
+            if(FPS > 60):
+                FPS = 60
+        
         jayhawk.updatePosition()
-                
+        
         #Keeps the Jayhawk in screen for testing
         #jayrect.clamp_ip(screenrect)
         jayhawk.clamp()        
@@ -312,6 +335,28 @@ def gameLoop():
         screen.blit(back.image, back.rect)
         screen.blit(back.image, back.rect2)
         screen.blit(back.image, back.rect3)
+
+        #-------------------------------------------------
+        #draw powerup
+        for powerupElement in powerupList:
+            pygame.draw.circle(screen, powerupElement.circle_color, powerupElement.circle_pos,
+                               powerupElement.circle_radius, powerupElement.circle_width)
+            screen.blit(powerupElement.image, powerupElement.image_rect)
+            if(powerupElement.scroll() == False):
+                powerupList.pop(0)
+        #generate powerup
+        if(randint(0, 100) == 1):
+            poweruptest1 = grenade_launcher()#PowerUp((0,255,0), (50,50), 20, 0, images['jayhawk'], 'test')
+            powerupList.append(poweruptest1)
+        #draw powerup duration bar
+        for powerupObtainedElement in powerupObtainedList:
+            powerupObtainedElement.effect()
+            powerupObtainedElement.update_duration()
+            pygame.draw.rect(screen, powerupObtainedElement.circle_color,
+                             (0,475,powerupObtainedElement.duration_bar_length,5), 0)
+            if(powerupObtainedElement.duration_expired):
+                powerupObtainedList.remove(powerupObtainedElement)
+        #-----------------------------------------------
         
         #Make background scroll
         back.scroll()
@@ -373,7 +418,7 @@ def gameLoop():
             jayhawk.clamp()
             screen.blit(jayhawk.image, jayhawk.rect)
             
-                        
+            
             #Draw message
             message_to_screen(str(score),
                             blue,
