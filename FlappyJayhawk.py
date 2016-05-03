@@ -23,14 +23,17 @@ Python documentation regarding classes: https://docs.python.org/2/tutorial/class
 """
 
 #Import
-import sys, pygame, time, os
+import sys, pygame, time, os, datetime
 from random import randint
 from Jayhawk import *
 from Pipe import *
 from Background import *
+from database import *
+  
 
 #Initialization
 pygame.init()
+database().__init__()
 
 #Screen Initializations
 pygame.display.set_caption("Flappy Jayhawk")
@@ -340,9 +343,11 @@ def gameLoop():
             #if (pipe_collisions_top(jayrect,topPipeRect)):
             if (pipe_collisions_top(jayhawk.rect,topPipeRect)):
                 gameOver = True
+                database().addScore(score)
             #if (pipe_collisions_bot(jayrect,botPipeRect)):
             if (pipe_collisions_bot(jayhawk.rect,botPipeRect)):   
                 gameOver = True
+                database().addScore(score)
 
 
 	#Implements score
@@ -352,7 +357,8 @@ def gameLoop():
         message_to_screen(str(score),
 			blue,
 			-200,
-			"large")    
+			"large")
+                                 
         while gameOver == True:
                        
             screen.fill(fill)
