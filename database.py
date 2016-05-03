@@ -13,7 +13,7 @@ class database:
             self.conn=mysql.connector.connect(user='jyang',password='gumy555',host='mysql.eecs.ku.edu',database='jyang')
             self.mycursor=self.conn.cursor()
             self.mycursor.execute("SHOW TABLES")            
-            print(mycursor.fetchall())
+            print(self.mycursor.fetchall())
             self.working = True
         except ImportError:
             print("database() error: MySQL-Connector could not be imported")
@@ -25,8 +25,14 @@ class database:
             add_score = ("INSERT INTO scores_alltime (score, name, timestamp) VALUES (%s, %s, %s)")
             score_data = (score, 'test', datetime.datetime.now())
             self.mycursor.execute(add_score, score_data)
+            self.printTable(score)
 
-    def updateTables(self, score):
+    def printTable(self, score):
+        if(self.working):
+            self.mycursor.execute("SELECT * "
+                "FROM  `scores_alltime` "
+                "LIMIT 0 , 30")
+            print(self.mycursor.fetchall())
         """to be implemented...
         self.mycursor.execute("SELECT COUNT(*) FROM fooTable")
                 UPDATE table_name
