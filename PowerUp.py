@@ -1,10 +1,31 @@
-import pygame
+import os, pygame
 from random import randint
 
+def loadImports(path):
+    files = os.listdir(path)
+    imps = []
+
+    for i in range(len(files)):
+        name = files[i].split('.')
+        if len(name) > 1:
+            if name[1] == 'py' and name[0] != '__init__':
+               name = name[0]
+               imps.append(name)
+
+    file = open(path+'__init__.py','w')
+
+    toWrite = '__all__ = '+str(imps)
+    
+    file.write(toWrite)
+    file.close()
+    return (toWrite)
 
 class PowerUp(pygame.sprite.Sprite):
     
     POWERUP_DURATION = 5#5seconds
+
+    POWERUPS_LOADED = loadImports('PowerUps/')
+    POWERUPS_LOADED_CLEAN = POWERUPS_LOADED.replace('__all__ = [', '').replace('\'', '').replace(',', '').replace(']', '')
     
     def __init__(self, color, pos, radius, width, image, effectname):
         #--------------when the PowerUp is floating in the air
@@ -32,7 +53,7 @@ class PowerUp(pygame.sprite.Sprite):
         #power up duration bar length: represented as a 200px bar that, over POWERUP_DURATION, will reduce to 0px
         self.PowerUp_duration_bar_length = 200
         self.duration_remaining = 300#5 seconds * 60 FPS = 300 frame duration
-
+    
     def scroll(self):
         self.x -= 1
         self.image_x -= 1

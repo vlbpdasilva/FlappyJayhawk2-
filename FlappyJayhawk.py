@@ -29,8 +29,9 @@ from Jayhawk import *
 from Pipe import *
 from Background import *
 
+#import powerups
 from PowerUp import *
-from grenade_launcher import *
+from PowerUps import * #from grenade_launcher import *
 
 #Initialization
 pygame.init()
@@ -278,8 +279,16 @@ def gameLoop():
     #powerupList.append(poweruptest)
     #powerups that have been picked up
     powerupObtainedList = []
-    poweruptest = grenade_launcher()
-    powerupObtainedList.append(poweruptest)
+    #poweruptest = grenade_launcher.grenade_launcher()
+    PowerUpsLoadedList = PowerUp.POWERUPS_LOADED_CLEAN.split(' ')
+    for powerupElement in PowerUpsLoadedList:
+        module = __import__('PowerUps.' + powerupElement, fromlist=['uselessplaceholder'])
+        class_ = getattr(module, 'grenade_launcher')
+        poweruptest = class_()
+        powerupObtainedList.append(poweruptest)
+
+    print PowerUp.POWERUPS_LOADED_CLEAN
+    print PowerUp.POWERUPS_LOADED#.split( )[2].split('\'')
     
     while not gameExit:
         for event in pygame.event.get():
@@ -346,7 +355,7 @@ def gameLoop():
                 powerupList.pop(0)
         #generate powerup
         if(randint(0, 100) == 1):
-            poweruptest1 = grenade_launcher()#PowerUp((0,255,0), (50,50), 20, 0, images['jayhawk'], 'test')
+            poweruptest1 = grenade_launcher.grenade_launcher()#PowerUp((0,255,0), (50,50), 20, 0, images['jayhawk'], 'test')
             powerupList.append(poweruptest1)
         #draw powerup duration bar
         for powerupObtainedElement in powerupObtainedList:

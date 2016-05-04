@@ -19,7 +19,7 @@ class grenade_launcher(PowerUp):
         if keys[pygame.K_UP]:
             print 'boom'
             if(grenade_launcher.GRENADELAUNCHED == False):
-                grenade_launcher.GRENADELIST.append(grenade(Jayhawk.X, Jayhawk.Y))
+                grenade_launcher.GRENADELIST.append(grenade(Jayhawk.X, Jayhawk.Y + 20))
             grenade_launcher.GRENADELAUNCHED = True
             #pygame.draw.rect(grenade_launcher.SCREEN, (0,0,0),(0,Jayhawk.Y,50,50), 0)
         else:
