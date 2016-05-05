@@ -32,6 +32,7 @@ from Background import *
 #import powerups
 from PowerUp import *
 from PowerUps import * #from grenade_launcher import *
+from PowerUpManager import * 
 
 #Initialization
 pygame.init()
@@ -273,7 +274,7 @@ def gameLoop():
     score = 0
     global FPS
     
-    #poweruptest = PowerUp(blue, (50,50), 20, 0, images['jayhawk'], 'test')
+    """#poweruptest = PowerUp(blue, (50,50), 20, 0, images['jayhawk'], 'test')
     #powerup array
     powerupList = []
     #powerupList.append(poweruptest)
@@ -283,12 +284,11 @@ def gameLoop():
     PowerUpsLoadedList = PowerUp.POWERUPS_LOADED_CLEAN.split(' ')
     for powerupElement in PowerUpsLoadedList:
         module = __import__('PowerUps.' + powerupElement, fromlist=['uselessplaceholder'])
-        class_ = getattr(module, 'grenade_launcher')
+        class_ = getattr(module, powerupElement)
         poweruptest = class_()
-        powerupObtainedList.append(poweruptest)
+        powerupObtainedList.append(poweruptest)"""
 
-    print PowerUp.POWERUPS_LOADED_CLEAN
-    print PowerUp.POWERUPS_LOADED#.split( )[2].split('\'')
+    powerupManager = PowerUpManager()
     
     while not gameExit:
         for event in pygame.event.get():
@@ -345,7 +345,7 @@ def gameLoop():
         screen.blit(back.image, back.rect2)
         screen.blit(back.image, back.rect3)
 
-        #-------------------------------------------------
+        """#-------------------------------------------------
         #draw powerup
         for powerupElement in powerupList:
             pygame.draw.circle(screen, powerupElement.circle_color, powerupElement.circle_pos,
@@ -365,7 +365,9 @@ def gameLoop():
                              (0,475,powerupObtainedElement.duration_bar_length,5), 0)
             if(powerupObtainedElement.duration_expired):
                 powerupObtainedList.remove(powerupObtainedElement)
-        #-----------------------------------------------
+        #-----------------------------------------------"""
+        powerupManager.spawn_management()
+        powerupManager.obtained_management()
         
         #Make background scroll
         back.scroll()
