@@ -32,7 +32,8 @@ from Background import *
 #import powerups
 from PowerUp import *
 from PowerUps import * #from grenade_launcher import *
-from PowerUpManager import * 
+from PowerUpManager import *
+from PipeManager import *
 
 #Initialization
 pygame.init()
@@ -241,13 +242,14 @@ def gameLoop():
     #Scrolling background declaration
     back = Background(images['background'], images['background'].get_size(), height)
 
-    #Array declaration for moving pipes
+    """#Array declaration for moving pipes
     pipe = Pipe(images['pipe'], width)
     pipeList = []
     pipeList.append(pipe)
     #add pipes every 2 seconds
     delayBeforeNextPipe = 286 #(1000 / pygame.time.delay(n)) * 2
-    delayBeforeNextPipeIncr = 0;
+    delayBeforeNextPipeIncr = 0;"""
+    pipeManager = PipeManager(images['pipe'])
     
     #Definition of the jayhawk object and its corresponding rect
     jayhawk = Jayhawk(80,200,(60,60),images['jayhawk'])
@@ -373,7 +375,7 @@ def gameLoop():
         #Make background scroll
         back.scroll()
     
-        #Generates new pipes by appending them to the end of Pipe array
+        """#Generates new pipes by appending them to the end of Pipe array
         delayBeforeNextPipeIncr = delayBeforeNextPipeIncr + 1
         if(delayBeforeNextPipeIncr > delayBeforeNextPipe):
             pipe1 = Pipe(images['pipe'], width)
@@ -386,9 +388,6 @@ def gameLoop():
             #make pipe scroll
             if(pipeElement.scroll() == False):
                 pipeList.pop(0)
-                
-        #Draw Jayhawk
-        screen.blit(jayhawk.image, jayhawk.rect)
 
         #Implements collisions
         for pipeElement in pipeList:
@@ -401,15 +400,37 @@ def gameLoop():
             if (pipe_collisions_bot(jayhawk.rect,botPipeRect)):   
                 gameOver = True
 
-
-	#Implements score
+        #Implements score
         for pipeElement in pipeList:
             if (pipe_passed(jayhawk.rect,pipeElement.rect_top)):
                 score = score + 1
         message_to_screen(str(score),
 			blue,
 			-200,
-			"large")    
+			"large")
+         """
+
+        pipeManager.draw_pipes(1)
+        pipeManager.spawn_management()
+        if(pipeManager.score_management()):
+            score = score + 1
+            
+        message_to_screen(str(score),
+			blue,
+			-200,
+			"large")
+            
+        if(pipeManager.collision_management()):
+            gameOver = True
+            
+        
+        #Draw Jayhawk
+        screen.blit(jayhawk.image, jayhawk.rect)
+
+        
+
+
+	   
         while gameOver == True:
                        
             screen.fill(fill)
@@ -420,10 +441,11 @@ def gameLoop():
             #Make background scroll		              
             #back.scroll()	
 
-            #Draw final pipe location
+            """#Draw final pipe location
             for pipeElement in pipeList:
                     screen.blit(pipeElement.image_top, pipeElement.rect_top)
-                    screen.blit(pipeElement.image_bot, pipeElement.rect_bot)
+                    screen.blit(pipeElement.image_bot, pipeElement.rect_bot)"""
+            pipeManager.draw_pipes(0)
 		
             #Draw Jayhawk
             jayhawk.updatePosition()
