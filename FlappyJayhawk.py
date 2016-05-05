@@ -366,6 +366,7 @@ def gameLoop():
             if(powerupObtainedElement.duration_expired):
                 powerupObtainedList.remove(powerupObtainedElement)
         #-----------------------------------------------"""
+        powerupManager.draw_powerups()
         powerupManager.spawn_management()
         powerupManager.obtained_management()
         

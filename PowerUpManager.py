@@ -1,4 +1,4 @@
-import pygame, copy
+import pygame
 from Jayhawk import *
 
 #import powerups
@@ -30,17 +30,7 @@ class PowerUpManager():
         print PowerUp.POWERUPS_LOADED_CLEAN
         print PowerUp.POWERUPS_LOADED#.split( )[2].split('\'')
 
-    def spawn_management(self):
-        #draw powerups that are spawned in the air
-        for powerupElement in self.powerupList:
-            pygame.draw.circle(PowerUpManager.SCREEN, powerupElement.circle_color, powerupElement.circle_pos,
-                               powerupElement.circle_radius, powerupElement.circle_width)
-            PowerUpManager.SCREEN.blit(powerupElement.image, powerupElement.image_rect)
-            if(self.powerup_collisions(powerupElement)):
-               self.powerupList.remove(powerupElement)
-            if(powerupElement.scroll() == False):
-               self.powerupList.pop(0)
-                
+    def spawn_management(self):        
         #spawn powerup at random
         if(randint(0, 100) == 1):
             #select a random index out of the POWERUPS_LOADED_STR
@@ -63,8 +53,19 @@ class PowerUpManager():
             if(powerupObtainedElement.duration_expired):
                 self.powerupObtainedList.remove(powerupObtainedElement)
 
-    def powerup_collisions(self, powerup):
+    def collision_management(self, powerup):
         """Takes in bottom pipes and the bird and returns true if there is a collision"""
-        if Jayhawk.Y > powerup.y and (Jayhawk.X+50 > powerup.x and Jayhawk.X-30 < powerup.x):
+        if (Jayhawk.Y+60 > powerup.y and Jayhawk.Y-25 < powerup.y) and (Jayhawk.X+60 > powerup.x and Jayhawk.X-25 < powerup.x):
             return True
         return False
+
+    def draw_powerups(self):
+        #draw powerups that are spawned in the air
+        for powerupElement in self.powerupList:
+            pygame.draw.circle(PowerUpManager.SCREEN, powerupElement.circle_color, powerupElement.circle_pos,
+                               powerupElement.circle_radius, powerupElement.circle_width)
+            PowerUpManager.SCREEN.blit(powerupElement.image, powerupElement.image_rect)
+            if(self.collision_management(powerupElement)):
+               self.powerupList.remove(powerupElement)
+            if(powerupElement.scroll() == False):
+               self.powerupList.pop(0)
