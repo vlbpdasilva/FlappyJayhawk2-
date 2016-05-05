@@ -241,7 +241,6 @@ def gameLoop():
 
     #Load game sounds
     try:
-        #pygame.mixer.music.load(os.path.join('data', 'an-turr.ogg'))#load music
         jump = pygame.mixer.Sound(os.path.join('Sounds','Jump.ogg'))  #load sound
         fail = pygame.mixer.Sound(os.path.join('Sounds','Fail.ogg'))  #load sound
     except:
@@ -264,15 +263,18 @@ def gameLoop():
                     jayhawk.jump()
                     jump.play();
                 if event.key == pygame.K_1:
+                    if(difficulty != 1):
                         difficulty = 1;
                         back = Background(images['background'], images['background'].get_size(), height);
                         fill = (255, 231, 181);
                 if event.key == pygame.K_2:
+                    if(difficulty != 2):
                         difficulty = 2;
                         ### background image from http://freetems.net/files/2143_t2.png
                         back = Background(images['background2'], images['background2'].get_size(), height);
                         fill = (17, 131, 255);
                 if event.key == pygame.K_3:
+                    if(difficulty != 3):
                         difficulty = 3;
                         ### background image from https://kanimate.files.wordpress.com/2015/05/3.jpg
                         back = Background(images['background3'], images['background3'].get_size(), height);           
