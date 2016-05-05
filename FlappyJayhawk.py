@@ -24,7 +24,9 @@ Python documentation regarding classes: https://docs.python.org/2/tutorial/class
 
 #Import
 import sys, pygame, time, os, datetime
+#import flappymenu as dm
 from random import randint
+
 from Jayhawk import *
 from Pipe import *
 from Background import *
@@ -98,6 +100,109 @@ def load_images():
             'pipe': load_image('pipe.png')
             }
 
+def option_menu(screen, menu, x_pos = 200, y_pos = 250, font = None,
+            size = 70, distance = 1.4, fgcolor = (255,255,255),
+            cursorcolor = (255,0,0), exitAllowed = True):
+    pygame.font.init()
+    if font == None:
+        myfont = pygame.font.Font(None, size)
+    else:
+        myfont = pygame.font.SysFont(font, size)
+    cursorpos = 0
+    renderWithChars = False
+    for i in menu:
+        if renderWithChars == False:
+            text =  myfont.render(str(cursorpos + 1)+".  " + i,
+                True, fgcolor)
+        else:
+            text =  myfont.render(chr(char)+".  " + i,
+                True, fgcolor)
+            char += 1
+        textrect = text.get_rect()
+        textrect = textrect.move(x_pos, 
+                   (size // distance * cursorpos) + y_pos)
+        screen.blit(text, textrect)
+        pygame.display.update(textrect)
+        cursorpos += 1
+        if cursorpos == 9:
+            renderWithChars = True
+            char = 65
+
+    # Draw the ">", the Cursor
+    cursorpos = 0
+    cursor = myfont.render(">", True, cursorcolor)
+    cursorrect = cursor.get_rect()
+    cursorrect = cursorrect.move(x_pos - (size // distance),
+                 (size // distance * cursorpos) + y_pos)
+
+    # The whole While-loop takes care to show the Cursor, move the
+    # Cursor and getting the Keys (1-9 and A-Z) to work...
+    ArrowPressed = True
+    exitMenu = False
+    clock = pygame.time.Clock()
+    filler = pygame.Surface.copy(screen)
+    fillerrect = filler.get_rect()
+    while True:
+        clock.tick(30)
+        if ArrowPressed == True:
+            screen.blit(filler, fillerrect)
+            pygame.display.update(cursorrect)
+            cursorrect = cursor.get_rect()
+            cursorrect = cursorrect.move(x_pos - (size // distance),
+                         (size // distance * cursorpos) + y_pos)
+            screen.blit(cursor, cursorrect)
+            pygame.display.update(cursorrect)
+            ArrowPressed = False
+        if exitMenu == True:
+            break
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return -1
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE and exitAllowed == True:
+                    if cursorpos == len(menu) - 1:
+                        exitMenu = True
+                    else:
+                        cursorpos = len(menu) - 1; ArrowPressed = True
+
+
+                # This Section is huge and ugly, I know... But I don't
+                # know a better method for this^^
+                if event.key == pygame.K_1:
+                    cursorpos = 0; ArrowPressed = True; exitMenu = True
+                elif event.key == pygame.K_2 and len(menu) >= 2:
+                    cursorpos = 1; ArrowPressed = True; exitMenu = True
+                elif event.key == pygame.K_3 and len(menu) >= 3:
+                    cursorpos = 2; ArrowPressed = True; exitMenu = True
+                elif event.key == pygame.K_4 and len(menu) >= 4:
+                    cursorpos = 3; ArrowPressed = True; exitMenu = True
+                elif event.key == pygame.K_5 and len(menu) >= 5:
+                    cursorpos = 4; ArrowPressed = True; exitMenu = True
+                elif event.key == pygame.K_6 and len(menu) >= 6:
+                    cursorpos = 5; ArrowPressed = True; exitMenu = True
+                elif event.key == pygame.K_7 and len(menu) >= 7:
+                    cursorpos = 6; ArrowPressed = True; exitMenu = True
+                
+                elif event.key == pygame.K_UP:
+                    ArrowPressed = True
+                    if cursorpos == 0:
+                        cursorpos = len(menu) - 1
+                    else:
+                        cursorpos -= 1
+                elif event.key == pygame.K_DOWN:
+                    ArrowPressed = True
+                    if cursorpos == len(menu) - 1:
+                        cursorpos = 0
+                    else:
+                        cursorpos += 1
+                elif event.key == pygame.K_KP_ENTER or \
+                     event.key == pygame.K_RETURN:
+                            exitMenu = True
+    
+    return cursorpos
+
+
+
 def start_menu():
     """Create a start menu that gives the users the title of the game and the creators of the game
     Also gives users the directions to start the game and the directions to play the game.
@@ -136,12 +241,34 @@ def start_menu():
                             blue,
                             -20,
                             "small")
-        message_to_screen("Press SPACE to play!!",
+        """message_to_screen("Press SPACE to play!!",
                             red,
                             20,
-                            "medium")
+                            "medium")"""
+        pygame.display.update()
+        
+        choose = option_menu(screen, [
+                        'Start Game',
+                        'Options',
+                        'Manual',
+                        'Show Highscore',
+                        'Quit Game'], 200,250,None,32,1.4,red,red)
+
+        if choose == 0:
+            print "You choose 'Start Game'."
+            intro = False
+        elif choose == 1:
+            print "You choose 'Options'."
+        elif choose == 2:
+            print "You choose 'Manual'."
+        elif choose == 3:
+            print "You choose 'Show Highscore'."
+        elif choose == 4:
+            print "You choose 'Quit Game'."
+            pygame.quit()
 
         pygame.display.update()
+
         clock.tick(FPS)
         
 def game_over():
