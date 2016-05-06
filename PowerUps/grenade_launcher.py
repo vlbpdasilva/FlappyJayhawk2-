@@ -15,7 +15,7 @@ class grenade_launcher(PowerUp):
     def effect(self):
         """Press up to launch a grenade"""
         #pygame.draw.rect(grenade_launcher.SCREEN, (0,255,0),(0,Jayhawk.Y,50,50), 0)
-
+        
         keys = pygame.key.get_pressed()
         if keys[pygame.K_UP]:
             #print 'boom'
@@ -26,6 +26,12 @@ class grenade_launcher(PowerUp):
         else:
             grenade_launcher.GRENADE_LAUNCHED = False
 
+        self.update_grenade()
+
+    def effect_expire(self):
+        self.update_grenade()
+
+    def update_grenade(self):
         for grenadeElement in grenade_launcher.GRENADE_LIST:
             grenadeElement.updatePosition()
             grenadeElement_rect = pygame.draw.circle(grenade_launcher.SCREEN, (0,0,0), grenadeElement.pos, 5, 0)
@@ -39,9 +45,6 @@ class grenade_launcher(PowerUp):
                         settings.pipeManager.pipeList[collision[0]].y_top = 0
                     else:
                         settings.pipeManager.pipeList[collision[0]].y_bot = 500
-
-
-        
         
     """def load_image(img_file_name):
         Return the loaded pygame image with the specified file name.

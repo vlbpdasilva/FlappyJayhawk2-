@@ -47,17 +47,15 @@ class PipeManager():
             if (self.pipe_collisions_bot(bird, botPipeRect)):   
                 return True#gameOver = True
     def collision_pipe_num(self, bird):
-        num = 0
-        for pipeElement in self.pipeList:
+        for index, pipeElement in enumerate(self.pipeList):
             botPipeRect = pipeElement.rect_bot
             topPipeRect = pipeElement.rect_top
             #if (pipe_collisions_top(jayrect,topPipeRect)):
             if (self.pipe_collisions_top(bird, topPipeRect)):
-                return (num, 'top')
+                return (index, 'top')
             #if (pipe_collisions_bot(jayrect,botPipeRect)):
             if (self.pipe_collisions_bot(bird, botPipeRect)):   
-                return (num, 'bot')
-            num = num + 1
+                return (index, 'bot')
             
                 
     def pipe_collisions_top(self,bird,pipes):

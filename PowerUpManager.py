@@ -44,14 +44,17 @@ class PowerUpManager():
             self.powerupList.append(powerup1)
 
     def obtained_management(self):
+        """if duration hasnt expired call effect()
+        if duration HAS expired call effect_expire()"""
         #draw powerup duration bar
-        for powerupObtainedElement in self.powerupObtainedList:
-            powerupObtainedElement.effect()
+        for powerupObtainedElement in self.powerupObtainedList:   
             powerupObtainedElement.update_duration()
-            pygame.draw.rect(PowerUpManager.SCREEN, powerupObtainedElement.circle_color,
-                             (0,475,powerupObtainedElement.duration_bar_length,5), 0)
-            if(powerupObtainedElement.duration_expired):
-                self.powerupObtainedList.remove(powerupObtainedElement)
+            if(not powerupObtainedElement.duration_expired):
+                powerupObtainedElement.effect()
+                pygame.draw.rect(PowerUpManager.SCREEN, powerupObtainedElement.circle_color,
+                                 (0,475,powerupObtainedElement.duration_bar_length,5), 0)
+            else:
+                powerupObtainedElement.effect_expire()
 
     def collision(self, powerup):
         """Takes in bottom pipes and the bird and returns true if there is a collision"""
@@ -65,7 +68,16 @@ class PowerUpManager():
                                powerupElement.circle_radius, powerupElement.circle_width)
             PowerUpManager.SCREEN.blit(powerupElement.image, powerupElement.image_rect)
             if(self.collision(powerupElement)):
-               self.powerupObtainedList.append(powerupElement)
+               self.re_init_powerup(powerupElement.effectname)#self.powerupObtainedList.append(powerupElement)
                self.powerupList.remove(powerupElement)
             if(powerupElement.scroll() == False):
                self.powerupList.pop(0)
+
+    def re_init_powerup(self, effectname):
+        for index, powerupElement in enumerate(self.powerupObtainedList):
+            if powerupElement.effectname == effectname:
+                break
+        module = __import__('PowerUps.' + effectname,
+                                fromlist=['uselessplaceholder'])
+        class_ = getattr(module, effectname)
+        self.powerupObtainedList[index] = class_()

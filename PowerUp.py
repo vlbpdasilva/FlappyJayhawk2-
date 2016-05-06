@@ -99,3 +99,9 @@ class PowerUp(pygame.sprite.Sprite):
         """Some description that tells you it's abstract,
         often listing the methods you're expected to supply."""
         raise NotImplementedError( "Should have implemented this" )
+
+    def effect_expire(self):
+        """Some description that tells you it's abstract,
+        often listing the methods you're expected to supply.
+        Effect that occurs upon duration_expired"""
+        raise NotImplementedError( "Should have implemented this" )
