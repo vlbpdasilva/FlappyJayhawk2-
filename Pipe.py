@@ -36,7 +36,7 @@ class Pipe(pygame.sprite.Sprite):
 
         self.Pipe_image_top = image
         self.Pipe_image_top = self.Pipe_image_top.convert_alpha()
-        self.Pipe_image_top = pygame.transform.rotate(self.Pipe_image_top, 180)
+        self.Pipe_image_top = pygame.transform.flip(self.Pipe_image_top, False, True)
         self.Pipe_mask_top = pygame.mask.from_surface(self.Pipe_image_top)
         
         self.Pipe_image_bot = image

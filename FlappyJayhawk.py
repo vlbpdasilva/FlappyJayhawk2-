@@ -186,8 +186,9 @@ def message_to_screen(msg, color, y_displace=0, size="small"):
     textRect.center = ((width/2),(height/2)+y_displace)
     screen.blit(textSurf,textRect)
 
+"""
 def pipe_collisions_top(bird,pipes):
-    """Takes in top pipes and the bird and returns true if there is a collision"""
+    Takes in top pipes and the bird and returns true if there is a collision
     #---------Notes:--------
     #Screen is (600, 500)
     #Upper right is (600,0)
@@ -200,15 +201,15 @@ def pipe_collisions_top(bird,pipes):
 	
     
 def pipe_collisions_bot(bird,pipes):
-    """Takes in bottom pipes and the bird and returns true if there is a collision"""
+    Takes in bottom pipes and the bird and returns true if there is a collision
     if bird.y + 60 > pipes.y and (bird.x+50 > pipes.x and bird.x-30 < pipes.x):
         return True
     return bird.colliderect(pipes)
     
 def pipe_passed(bird,pipes):
-    """Pass pipe and increment score"""
+    Pass pipe and increment score
     if bird.y > pipes.y and (bird.x+30 == pipes.x):
-        return True   
+        return True   """
 
 def difficulty_change(difficulty):
     if(difficulty == 1):
@@ -412,7 +413,7 @@ def gameLoop():
 
         pipeManager.draw_pipes(1)
         pipeManager.spawn_management()
-        if(pipeManager.score_management()):
+        if(pipeManager.score(jayhawk.rect)):
             score = score + 1
             
         message_to_screen(str(score),
@@ -420,7 +421,7 @@ def gameLoop():
 			-200,
 			"large")
             
-        if(pipeManager.collision_management()):
+        if(pipeManager.collision(jayhawk.rect)):
             gameOver = True
             
         

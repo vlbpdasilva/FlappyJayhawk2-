@@ -1,5 +1,5 @@
 import pygame
-from Jayhawk import *
+#from Jayhawk import *
 
 #import powerups
 from Pipe import *
@@ -29,25 +29,25 @@ class PipeManager():
             self.pipeList.append(pipe1)
             self.delayBeforeNextPipeIncr = 0
 
-    def score_management(self):
+    def score(self, bird):
         """Pass pipe and increment score"""
         for pipeElement in self.pipeList:
-            if Jayhawk.Y > pipeElement.rect_top.y and (Jayhawk.X+30 == pipeElement.rect_top.x):
+            if bird.y > pipeElement.rect_top.y and (bird.x+30 == pipeElement.rect_top.x):
                 return True
         
-    def collision_management(self):
+    def collision(self, bird):
         #Implements collisions
         for pipeElement in self.pipeList:
             botPipeRect = pipeElement.rect_bot
             topPipeRect = pipeElement.rect_top
             #if (pipe_collisions_top(jayrect,topPipeRect)):
-            if (self.pipe_collisions_top(topPipeRect)):
+            if (self.pipe_collisions_top(bird, topPipeRect)):
                 return True#gameOver = True
             #if (pipe_collisions_bot(jayrect,botPipeRect)):
-            if (self.pipe_collisions_bot(botPipeRect)):   
+            if (self.pipe_collisions_bot(bird, botPipeRect)):   
                 return True#gameOver = True
                 
-    def pipe_collisions_top(self,pipes):
+    def pipe_collisions_top(self,bird,pipes):
         """Takes in top pipes and the Jayhawk and returns true if there is a collision"""
         #---------Notes:--------
         #Screen is (600, 500)
@@ -55,14 +55,14 @@ class PipeManager():
         #Lower left is (0,500)
         #Lower right is (600 ,500)
         
-        if Jayhawk.Y < (504 + pipes.y) and (Jayhawk.X+50 > pipes.x and Jayhawk.X-30 < pipes.x):
+        if bird.y < (504 + pipes.y) and (bird.x+50 > pipes.x and bird.x-30 < pipes.x):
             return True
         #return Jayhawk.colliderect(pipes)
 	
     
-    def pipe_collisions_bot(self,pipes):
+    def pipe_collisions_bot(self,bird,pipes):
         """Takes in bottom pipes and the Jayhawk and returns true if there is a collision"""
-        if Jayhawk.Y + 60 > pipes.y and (Jayhawk.X+50 > pipes.x and Jayhawk.X-30 < pipes.x):
+        if bird.y + 60 > pipes.y and (bird.x+50 > pipes.x and bird.x-30 < pipes.x):
             return True
         #return Jayhawk.colliderect(pipes)
 
