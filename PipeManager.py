@@ -8,7 +8,7 @@ class PipeManager():
 
     SCREEN = pygame.display.set_mode((600,500))
 
-    def __init__(self, image):
+    def __init__(self, image):#other params: pipegap, pipescrollspeed, pipespawntime
         self.image = image
         #Array declaration for moving pipes
         pipe = Pipe(self.image, 600)
@@ -46,6 +46,19 @@ class PipeManager():
             #if (pipe_collisions_bot(jayrect,botPipeRect)):
             if (self.pipe_collisions_bot(bird, botPipeRect)):   
                 return True#gameOver = True
+    def collision_pipe_num(self, bird):
+        num = 0
+        for pipeElement in self.pipeList:
+            botPipeRect = pipeElement.rect_bot
+            topPipeRect = pipeElement.rect_top
+            #if (pipe_collisions_top(jayrect,topPipeRect)):
+            if (self.pipe_collisions_top(bird, topPipeRect)):
+                return (num, 'top')
+            #if (pipe_collisions_bot(jayrect,botPipeRect)):
+            if (self.pipe_collisions_bot(bird, botPipeRect)):   
+                return (num, 'bot')
+            num = num + 1
+            
                 
     def pipe_collisions_top(self,bird,pipes):
         """Takes in top pipes and the Jayhawk and returns true if there is a collision"""

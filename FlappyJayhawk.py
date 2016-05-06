@@ -24,19 +24,19 @@ Python documentation regarding classes: https://docs.python.org/2/tutorial/class
 
 #Import
 import sys, pygame, time, os
+import settings
 from random import randint
 from Jayhawk import *
 from Pipe import *
 from Background import *
 
 #import powerups
-from PowerUp import *
-from PowerUps import * #from grenade_launcher import *
 from PowerUpManager import *
 from PipeManager import *
 
 #Initialization
 pygame.init()
+settings.init()
 
 #Screen Initializations
 pygame.display.set_caption("Flappy Jayhawk")
@@ -250,12 +250,13 @@ def gameLoop():
     #add pipes every 2 seconds
     delayBeforeNextPipe = 286 #(1000 / pygame.time.delay(n)) * 2
     delayBeforeNextPipeIncr = 0;"""
-    pipeManager = PipeManager(images['pipe'])
-    
+    #pipeManager = PipeManager(images['pipe'])
+    settings.pipeManager = PipeManager(images['pipe'])
+    pipeManager = settings.pipeManager
     #Definition of the jayhawk object and its corresponding rect
     jayhawk = Jayhawk(80,200,(60,60),images['jayhawk'])
     
-    #Random pipe declaration for testing
+    """#Random pipe declaration for testing
     pip = images['pipe']
     pip = pygame.transform.scale(pip, (50, 100))
     piprect = pip.get_rect()
@@ -265,7 +266,7 @@ def gameLoop():
     #piplol = objRef(Pipe(images['pipe'], width))
     #piplol.call('test',[42, 'bar'])
     #pipRef = objRef(pipe)#pipe declared above
-    #objReftest(pipRef)
+    #objReftest(pipRef)"""
 
     #Rect declaration of screen
     screenrect = screen.get_rect()
@@ -423,7 +424,6 @@ def gameLoop():
             
         if(pipeManager.collision(jayhawk.rect)):
             gameOver = True
-            
         
         #Draw Jayhawk
         screen.blit(jayhawk.image, jayhawk.rect)

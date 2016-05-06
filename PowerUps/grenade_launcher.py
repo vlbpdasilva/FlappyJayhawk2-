@@ -1,4 +1,5 @@
 import pygame,os
+import settings
 from random import randint
 from PowerUp import *
 from Jayhawk import *
@@ -17,7 +18,7 @@ class grenade_launcher(PowerUp):
 
         keys = pygame.key.get_pressed()
         if keys[pygame.K_UP]:
-            print 'boom'
+            #print 'boom'
             if(grenade_launcher.GRENADELAUNCHED == False):
                 grenade_launcher.GRENADELIST.append(grenade(Jayhawk.X, Jayhawk.Y + 20))
             grenade_launcher.GRENADELAUNCHED = True
@@ -27,9 +28,19 @@ class grenade_launcher(PowerUp):
 
         for grenadeElement in grenade_launcher.GRENADELIST:
             grenadeElement.updatePosition()
-            pygame.draw.circle(grenade_launcher.SCREEN, (0,0,0), grenadeElement.pos, 5, 0)
+            grenadeElement_rect = pygame.draw.circle(grenade_launcher.SCREEN, (0,0,0), grenadeElement.pos, 5, 0)
             if(grenadeElement.pos[1] > 500):
                 grenade_launcher.GRENADELIST.remove(grenadeElement)
+                
+            collision = settings.pipeManager.collision_pipe_num(grenadeElement_rect)
+            if(collision):
+                if(collision[1] == 'top'):
+                    settings.pipeManager.pipeList[collision[0]].y_top = 0
+                else:
+                    settings.pipeManager.pipeList[collision[0]].y_bot = 500
+
+
+        
         
     """def load_image(img_file_name):
         Return the loaded pygame image with the specified file name.
