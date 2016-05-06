@@ -53,11 +53,10 @@ class PowerUpManager():
             if(powerupObtainedElement.duration_expired):
                 self.powerupObtainedList.remove(powerupObtainedElement)
 
-    def collision_management(self, powerup):
+    def collision(self, powerup):
         """Takes in bottom pipes and the bird and returns true if there is a collision"""
-        if (Jayhawk.Y+60 > powerup.y and Jayhawk.Y-25 < powerup.y) and (Jayhawk.X+60 > powerup.x and Jayhawk.X-25 < powerup.x):
-            return True
-        return False
+        return (Jayhawk.Y+60 > powerup.y and Jayhawk.Y-25 < powerup.y) and (Jayhawk.X+60 > powerup.x and Jayhawk.X-25 < powerup.x)
+        
 
     def draw_powerups(self):
         #draw powerups that are spawned in the air
@@ -65,7 +64,8 @@ class PowerUpManager():
             pygame.draw.circle(PowerUpManager.SCREEN, powerupElement.circle_color, powerupElement.circle_pos,
                                powerupElement.circle_radius, powerupElement.circle_width)
             PowerUpManager.SCREEN.blit(powerupElement.image, powerupElement.image_rect)
-            if(self.collision_management(powerupElement)):
+            if(self.collision(powerupElement)):
+               self.powerupObtainedList.append(powerupElement)
                self.powerupList.remove(powerupElement)
             if(powerupElement.scroll() == False):
                self.powerupList.pop(0)

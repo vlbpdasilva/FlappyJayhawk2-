@@ -68,15 +68,13 @@ class PipeManager():
         #Lower left is (0,500)
         #Lower right is (600 ,500)
         
-        if bird.y < (504 + pipes.y) and (bird.x+50 > pipes.x and bird.x-30 < pipes.x):
-            return True
+        return (bird.y < (504 + pipes.y) and (bird.x+50 > pipes.x and bird.x-30 < pipes.x))
         #return Jayhawk.colliderect(pipes)
 	
     
     def pipe_collisions_bot(self,bird,pipes):
         """Takes in bottom pipes and the Jayhawk and returns true if there is a collision"""
-        if bird.y + 60 > pipes.y and (bird.x+50 > pipes.x and bird.x-30 < pipes.x):
-            return True
+        return (bird.y + 60 > pipes.y and (bird.x+50 > pipes.x and bird.x-30 < pipes.x))
         #return Jayhawk.colliderect(pipes)
 
 

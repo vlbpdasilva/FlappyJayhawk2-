@@ -5,8 +5,8 @@ from PowerUp import *
 from Jayhawk import *
 class grenade_launcher(PowerUp):
     SCREEN = pygame.display.set_mode((600,500))
-    GRENADELIST = []
-    GRENADELAUNCHED = False
+    GRENADE_LIST = []
+    GRENADE_LAUNCHED = False
     def __init__(self):
         super(grenade_launcher, self).__init__((0,0,0), (0,0), 20, 0,
                                                pygame.image.load(os.path.join('.', 'images', 'jayhawk.png')),
@@ -14,30 +14,31 @@ class grenade_launcher(PowerUp):
 
     def effect(self):
         """Press up to launch a grenade"""
-        pygame.draw.rect(grenade_launcher.SCREEN, (0,255,0),(0,Jayhawk.Y,50,50), 0)
+        #pygame.draw.rect(grenade_launcher.SCREEN, (0,255,0),(0,Jayhawk.Y,50,50), 0)
 
         keys = pygame.key.get_pressed()
         if keys[pygame.K_UP]:
             #print 'boom'
-            if(grenade_launcher.GRENADELAUNCHED == False):
-                grenade_launcher.GRENADELIST.append(grenade(Jayhawk.X, Jayhawk.Y + 20))
-            grenade_launcher.GRENADELAUNCHED = True
+            if(grenade_launcher.GRENADE_LAUNCHED == False):
+                grenade_launcher.GRENADE_LIST.append(grenade(Jayhawk.X, Jayhawk.Y + 20))
+            grenade_launcher.GRENADE_LAUNCHED = True
             #pygame.draw.rect(grenade_launcher.SCREEN, (0,0,0),(0,Jayhawk.Y,50,50), 0)
         else:
-            grenade_launcher.GRENADELAUNCHED = False
+            grenade_launcher.GRENADE_LAUNCHED = False
 
-        for grenadeElement in grenade_launcher.GRENADELIST:
+        for grenadeElement in grenade_launcher.GRENADE_LIST:
             grenadeElement.updatePosition()
             grenadeElement_rect = pygame.draw.circle(grenade_launcher.SCREEN, (0,0,0), grenadeElement.pos, 5, 0)
             if(grenadeElement.pos[1] > 500):
-                grenade_launcher.GRENADELIST.remove(grenadeElement)
-                
-            collision = settings.pipeManager.collision_pipe_num(grenadeElement_rect)
-            if(collision):
-                if(collision[1] == 'top'):
-                    settings.pipeManager.pipeList[collision[0]].y_top = 0
-                else:
-                    settings.pipeManager.pipeList[collision[0]].y_bot = 500
+                grenade_launcher.GRENADE_LIST.remove(grenadeElement)
+            else:    
+                collision = settings.pipeManager.collision_pipe_num(grenadeElement_rect)
+                if(collision):
+                    grenade_launcher.GRENADE_LIST.remove(grenadeElement)
+                    if(collision[1] == 'top'):
+                        settings.pipeManager.pipeList[collision[0]].y_top = 0
+                    else:
+                        settings.pipeManager.pipeList[collision[0]].y_bot = 500
 
 
         
