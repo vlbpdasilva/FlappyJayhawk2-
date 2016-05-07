@@ -22,4 +22,6 @@ class bullet_time(PowerUp):
                 settings.FPS = 60
 
     def effect_expire(self):
-        pass
+        settings.FPS += 3
+        if(settings.FPS > 60):
+            settings.FPS = 60

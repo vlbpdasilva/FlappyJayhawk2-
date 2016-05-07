@@ -1,4 +1,5 @@
 import pygame
+import settings
 from Jayhawk import *
 
 #import powerups
@@ -19,7 +20,9 @@ class PowerUpManager():
         #powerups that have been picked up
         self.powerupObtainedList = []
 
-        self.spawnChance = 1
+        self.spawnChance = 50
+
+        self.q = []
         
         for index, powerupElement in enumerate(PowerUpManager.POWERUPS_LOADED_STR):
             module = __import__('PowerUps.' + powerupElement, fromlist=['uselessplaceholder'])
@@ -35,27 +38,35 @@ class PowerUpManager():
 
     def spawn_management(self):        
         #spawn powerup at random
-        if(randint(0, 100) < self.spawnChance):
-            #select a random index out of the POWERUPS_LOADED_STR
-            random_select = randint(0, len(self.POWERUPS_LOADED_STR) - 1)
-            #instantiate the powerup from the random index of POWERUPS_LOADED_STR;
-            module = __import__('PowerUps.' + PowerUpManager.POWERUPS_LOADED_STR[random_select],
-                                fromlist=['uselessplaceholder'])
-            class_ = getattr(module, PowerUpManager.POWERUPS_LOADED_STR[random_select])
-            powerup1 = class_()
-            #append the copied powerup of powerupList
-            self.powerupList.append(powerup1)
+        if(settings.pipeManager.delayBeforeNextPipeIncr == 0):
+            del self.q[:]
+            for powerupElement in PowerUpManager.POWERUPS_LOADED_STR:                
+                if(randint(0, 100) < self.spawnChance):
+                    #select a random index out of the POWERUPS_LOADED_STR
+                    #random_select = randint(0, len(self.POWERUPS_LOADED_STR) - 1)
+                    #instantiate the powerup from the random index of POWERUPS_LOADED_STR;
+                    module = __import__('PowerUps.' + powerupElement,#PowerUpManager.POWERUPS_LOADED_STR[random_select],
+                                        fromlist=['uselessplaceholder'])
+                    class_ = getattr(module, powerupElement)#PowerUpManager.POWERUPS_LOADED_STR[random_select])
+                    powerup1 = class_()
+                    #append the copied powerup of powerupList
+                    self.q.append((powerup1,
+                                  randint(0, settings.pipeManager.delayBeforeNextPipe)))#self.powerupList.append(powerup1)
+
+        for powerupTupleElement in self.q:
+            if(settings.pipeManager.delayBeforeNextPipeIncr == powerupTupleElement[1]):
+                self.powerupList.append(powerupTupleElement[0])
 
     def obtained_management(self):
         """if duration hasnt expired call effect()
         if duration HAS expired call effect_expire()"""
         #draw powerup duration bar
-        for powerupObtainedElement in self.powerupObtainedList:   
+        for index, powerupObtainedElement in enumerate(self.powerupObtainedList):   
             powerupObtainedElement.update_duration()
             if(not powerupObtainedElement.duration_expired):
                 powerupObtainedElement.effect()
                 pygame.draw.rect(PowerUpManager.SCREEN, powerupObtainedElement.circle_color,
-                                 (0,475,powerupObtainedElement.duration_bar_length,5), 0)
+                                 (0,475 - index * 5,powerupObtainedElement.duration_bar_length,5), 0)
             else:
                 powerupObtainedElement.effect_expire()
 
