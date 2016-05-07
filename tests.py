@@ -40,17 +40,17 @@ class TestJayhawkDefs(unittest.TestCase):
         elif (currentTest == "test_is_update_position_working"):
             sys.stderr.write("Testing if position is getting updated with a jump and without a jump ... ")
         elif (currentTest == "test_is_gravity_working"):
-            sys.stderr.write("Testing if something is loaded into the Jayhawk image ... ")
+            sys.stderr.write("Testing if gravity is updating the speed of the bird ... ")
         elif (currentTest == "test_is_rot_center_working"):
-            sys.stderr.write("Testing if something is loaded into the Jayhawk image ... ")
+            sys.stderr.write("Testing if an image with its center rotated is the same as an image without ... ")
         elif (currentTest == "test_is_jump_working"):
-            sys.stderr.write("Testing if something is loaded into the Jayhawk image ... ")
+            sys.stderr.write("Testing if conditions for jump are passed in ... ")
         elif (currentTest == "test_is_clamp_working"):
-            sys.stderr.write("Testing if something is loaded into the Jayhawk image ... ")
+            sys.stderr.write("Testing if the jayhawk gets clamped to the actual game's parametered screen ... ")
         elif (currentTest == "test_is_mask_working"):
-            sys.stderr.write("Testing if something is loaded into the Jayhawk image ... ")
+            sys.stderr.write("Testing if a mask object is passed back from mask definition ... ")
         elif (currentTest == "test_is_rect_working"):
-            sys.stderr.write("Testing if something is loaded into the Jayhawk image ... ")
+            sys.stderr.write("Testing if a rect object is passed back from rect definition ... ")
         else:
             sys.stderr.write("Unnamed test ... ")
             
@@ -242,10 +242,17 @@ class TestStringMethods(unittest.TestCase):
             s.split(2)
 
 def main():
+    """
+    Loads the test and exits the pygame screen.
+	Keeps the dialog box up for 300 seconds
+    """
     unittest.TextTestRunner(verbosity=2).run(testsuite())
     pygame.quit()
     sys.exit(time.sleep(300))
-
+	
+"""
+Starts application by calling main function
+"""
 if __name__ == "__main__":
     main()
 
