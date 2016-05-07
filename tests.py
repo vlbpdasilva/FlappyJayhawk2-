@@ -32,7 +32,7 @@ class TestJayhawkDefs(unittest.TestCase):
     def setUp(self):
         """
         Sets up the test
-        Prints the short descriptions of the tests
+        Prints short descriptions of the tests
         """
         currentTest = self.shortDescription()
         if (currentTest == "test_is_image_working"):
