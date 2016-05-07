@@ -242,10 +242,17 @@ class TestStringMethods(unittest.TestCase):
             s.split(2)
 
 def main():
+    """
+    Loads the test and exits the pygame screen.
+	Keeps the dialog box up for 300 seconds
+    """
     unittest.TextTestRunner(verbosity=2).run(testsuite())
     pygame.quit()
     sys.exit(time.sleep(300))
-
+	
+"""
+Starts application by calling main function
+"""
 if __name__ == "__main__":
     main()
 
