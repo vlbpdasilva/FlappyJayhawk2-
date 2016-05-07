@@ -276,7 +276,7 @@ def gameLoop():
 
     #initialize score
     score = 0
-    global FPS
+    #global FPS
     
     """#poweruptest = PowerUp(blue, (50,50), 20, 0, images['jayhawk'], 'test')
     #powerup array
@@ -326,7 +326,7 @@ def gameLoop():
                     ### background image from https://kanimate.files.wordpress.com/2015/05/3.jpg
                     back = Background(images['background3'], images['background3'].get_size(), height);           
         
-        keys = pygame.key.get_pressed()
+        """keys = pygame.key.get_pressed()
         if keys[pygame.K_DOWN]:
             FPS -= 1
             if(FPS < 15):
@@ -334,7 +334,7 @@ def gameLoop():
         else:
             FPS += 3
             if(FPS > 60):
-                FPS = 60
+                FPS = 60"""
         
         jayhawk.updatePosition()
         
@@ -487,7 +487,7 @@ def gameLoop():
         #Updates screen and implements delay
         pygame.display.update()
         pygame.display.flip()
-        clock.tick(FPS)
+        clock.tick(settings.FPS)
 
 def main():
     """

@@ -18,21 +18,24 @@ class PowerUpManager():
         self.powerupList = []
         #powerups that have been picked up
         self.powerupObtainedList = []
+
+        self.spawnChance = 1
         
-        for powerupElement in PowerUpManager.POWERUPS_LOADED_STR:
+        for index, powerupElement in enumerate(PowerUpManager.POWERUPS_LOADED_STR):
             module = __import__('PowerUps.' + powerupElement, fromlist=['uselessplaceholder'])
             class_ = getattr(module, powerupElement)
             powerup = class_()
             #self.powerupLoadedList.append(powerup)
             #test
             self.powerupObtainedList.append(powerup)
-                            
+            self.powerupObtainedList[index].duration_remaining = 0  
+                        
         print PowerUp.POWERUPS_LOADED_CLEAN
         print PowerUp.POWERUPS_LOADED#.split( )[2].split('\'')
 
     def spawn_management(self):        
         #spawn powerup at random
-        if(randint(0, 100) == 1):
+        if(randint(0, 100) < self.spawnChance):
             #select a random index out of the POWERUPS_LOADED_STR
             random_select = randint(0, len(self.POWERUPS_LOADED_STR) - 1)
             #instantiate the powerup from the random index of POWERUPS_LOADED_STR;
