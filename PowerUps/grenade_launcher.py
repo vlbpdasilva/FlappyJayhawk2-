@@ -73,8 +73,8 @@ class grenade:
         self.x += self.x_speed
 
     def gravity(self):
-        self.y_speed += Jayhawk.gravity_accel
+        self.y_speed += settings.gravity_accel
 
     @property    
     def pos(self):
-        return (self.x, self.y)
+        return (int(self.x), int(self.y))

@@ -214,12 +214,15 @@ def pipe_passed(bird,pipes):
 def difficulty_change(difficulty):
     if(difficulty == 1):
         Jayhawk.gravity_accel = 1
+        settings.gravity_accel = 1
         Pipe.GAP = 200
     elif(difficulty == 2):
         Jayhawk.gravity_accel = 2
+        settings.gravity_accel = 2
         Pipe.GAP = 150
     elif(difficulty == 3):
         Jayhawk.gravity_accel = 3
+        settings.gravity_accel = 3
         Pipe.GAP = 125
 
 """def objReftest(c):
@@ -254,8 +257,9 @@ def gameLoop():
     settings.pipeManager = PipeManager(images['pipe'])
     pipeManager = settings.pipeManager
     #Definition of the jayhawk object and its corresponding rect
-    jayhawk = Jayhawk(80,200,(60,60),images['jayhawk'])
-    
+    settings.jayhawk = Jayhawk(80,200,(60,60),images['jayhawk'])
+    jayhawk = settings.jayhawk
+
     """#Random pipe declaration for testing
     pip = images['pipe']
     pip = pygame.transform.scale(pip, (50, 100))

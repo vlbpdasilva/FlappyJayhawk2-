@@ -155,6 +155,12 @@ class Jayhawk(pygame.sprite.Sprite):
             self.y = 0
         elif(self.y > 440):
             self.y = 440
+
+    def set_image(self, image, scale):
+        self.Jayhawk_image = image
+        self.Jayhawk_image = self.Jayhawk_image.convert_alpha()
+        self.Jayhawk_image = pygame.transform.scale(self.Jayhawk_image, scale)
+        self.original = self.Jayhawk_image
     
     @property
     def image(self):

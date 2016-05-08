@@ -15,4 +15,8 @@ def init():
     sound_toggle = True
 
     #gameplay properties
+    global gravity_accel
+
+    #game's global objects
+    global jayhawk
     global pipeManager
