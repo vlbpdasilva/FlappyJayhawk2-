@@ -28,20 +28,12 @@ from random import randint
 from Jayhawk import *
 from Pipe import *
 from Background import *
-
-#mysql test
-#source: https://www.youtube.com/watch?v=xgyVilYfJEo, https://dev.mysql.com/doc/connector-python/en/connector-python-api-errors-error.html
-import mysql.connector
-try:
-    conn=mysql.connector.connect(user='jyang',password='gumy555',host='mysql.eecs.ku.edu',database='jyang')
-    mycursor=conn.cursor()
-    mycursor.execute("SHOW TABLES")
-    print(mycursor.fetchall())
-except mysql.connector.Error as err:
-    print("Something went wrong: {}".format(err))
+from database import *
+  
 
 #Initialization
 pygame.init()
+database().__init__()
 
 #Screen Initializations
 pygame.display.set_caption("Flappy Jayhawk")
@@ -351,15 +343,11 @@ def gameLoop():
             #if (pipe_collisions_top(jayrect,topPipeRect)):
             if (pipe_collisions_top(jayhawk.rect,topPipeRect)):
                 gameOver = True
-                add_score = ("INSERT INTO scores_alltime (score, name, timestamp) VALUES (%s, %s, %s)")
-                data_employee = (score, 'test', datetime.datetime.now())
-                mycursor.execute(add_score, data_employee)
+                database().addScore(score)
             #if (pipe_collisions_bot(jayrect,botPipeRect)):
             if (pipe_collisions_bot(jayhawk.rect,botPipeRect)):   
                 gameOver = True
-                add_score = ("INSERT INTO scores_alltime (score, name, timestamp) VALUES (%s, %s, %s)")
-                data_employee = (score, 'test', datetime.datetime.now())
-                mycursor.execute(add_score, data_employee)
+                database().addScore(score)
 
 
 	#Implements score
