@@ -278,7 +278,9 @@ def start_menu():
             instruction()
             intro = False
         elif choose == 3:
+            high_score()
             print "You choose 'Show Highscore'."
+            intro = False
         elif choose == 4:
             print "You choose 'Quit Game'."
             pygame.quit()
@@ -436,6 +438,45 @@ def instruction():
                     "medium")
     pygame.display.update()
     pygame.time.delay(7)
+
+    choose = option_menu(screen, [
+                    'Back'], 250, 400, None, 32,1.4,blue,red)
+    if choose == 0:
+        print "Back"
+        start_menu()
+
+def high_score():
+    """
+    Show high score
+    """
+    for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit
+    images = load_images();
+    #Scrolling background declaration
+    back = Background(images['background'], images['background'].get_size(), height)
+
+    screen.fill((255, 231, 181))
+    #Draw background
+    screen.blit(back.image, back.rect)
+    screen.blit(back.image, back.rect2)
+    screen.blit(back.image, back.rect3)
+    #Make background scroll
+    back.scroll()
+
+    message_to_screen("High Score",
+                        blue,
+                        -100,
+                        "large")
+
+    message_to_screen(database().printTable(),
+                        blue,
+                        -50,
+                        "medium")
+
+    pygame.display.update()
+    clock.tick(FPS)
 
     choose = option_menu(screen, [
                     'Back'], 250, 400, None, 32,1.4,blue,red)
@@ -740,7 +781,7 @@ def gameLoop():
             gameOver = True
 
 
-	   
+	scoreAdded = False   
         while gameOver == True:
                        
             screen.fill(fill)
@@ -768,6 +809,9 @@ def gameLoop():
                             blue,
                             -200,
                             "large")
+            if(not scoreAdded):
+            	database().addScore(score)
+            	scoreAdded = True
             message_to_screen("Game Over",
                             blue,
                             -50,
