@@ -7,7 +7,7 @@ class bullet_time(PowerUp):
     SCREEN = pygame.display.set_mode((600,500))
     def __init__(self):
         super(bullet_time, self).__init__((0,255,0), (0,0), 20, 0,
-                                               pygame.image.load(os.path.join('.', 'images', 'jayhawk.png')),
+                                               pygame.image.load(os.path.join('.', 'images', 'bullet_time.png')),
                                                'bullet_time')
 
     def effect(self):
