@@ -1,7 +1,7 @@
 import datetime
 
 class database:
-    
+    """access the database for high scores"""
     #mysql test
     #source: https://www.youtube.com/watch?v=xgyVilYfJEo, https://dev.mysql.com/doc/connector-python/en/connector-python-api-errors-error.html
     def __init__(self):
@@ -21,6 +21,8 @@ class database:
             print("database() error: {}".format(err))
 
     def addScore(self, score):
+        """take score and put it into the database
+        """
         if(self.working):
             add_score = ("INSERT INTO scores_alltime (score, name, timestamp) VALUES (%s, %s, %s)")
             score_data = (score, 'test', datetime.datetime.now())
@@ -28,6 +30,8 @@ class database:
             self.printTable(score)
 
     def printTable(self, score):
+        """print all the scores in the high scores table
+        """
         if(self.working):
             self.mycursor.execute("SELECT * "
                 "FROM  `scores_alltime` "
