@@ -222,6 +222,15 @@ def start_menu():
     images = load_images();
     #Scrolling background declaration
     back = Background(images['background'], images['background'].get_size(), height)
+
+    screen.fill((255, 231, 181))
+
+    #Draw background
+    screen.blit(back.image, back.rect)
+    screen.blit(back.image, back.rect2)
+    screen.blit(back.image, back.rect3)
+    #Make background scroll
+    back.scroll()
     
     while intro: 
         # Start menu is being shown
@@ -233,14 +242,7 @@ def start_menu():
                 if event.key == pygame.K_SPACE:
                     intro = False
 
-        screen.fill((255, 231, 181))
-
-        #Draw background
-        screen.blit(back.image, back.rect)
-        screen.blit(back.image, back.rect2)
-        screen.blit(back.image, back.rect3)
-        #Make background scroll
-        back.scroll()
+        
 
         message_to_screen("Flappy JayHawks",
                             blue,
@@ -250,36 +252,64 @@ def start_menu():
                             blue,
                             -20,
                             "small")
-        """message_to_screen("Press SPACE to play!!",
-                            red,
-                            20,
-                            "medium")"""
         pygame.display.update()
-        pygame.time.delay(7)
+       
         
         choose = option_menu(screen, [
                         'Start Game',
                         'Options',
-                        'Manual',
+                        'Instructions',
                         'Show Highscore',
                         'Quit Game'], 200,250,None,32,1.4,red,red)
 
         if choose == 0:
             print "You choose 'Start Game'."
+            gameLoop()
             intro = False
         elif choose == 1:
             print "You choose 'Options'."
         elif choose == 2:
-            print "You choose 'Manual'."
+            print "You choose 'Instructions'."
+            instruction()
+            intro = False
         elif choose == 3:
             print "You choose 'Show Highscore'."
         elif choose == 4:
             print "You choose 'Quit Game'."
             pygame.quit()
 
-        pygame.display.update()
-        clock.tick(FPS)
         
+        clock.tick(FPS)
+
+def instruction():
+    for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit
+    images = load_images();
+    #Scrolling background declaration
+    back = Background(images['background'], images['background'].get_size(), height)
+
+    screen.fill((255, 231, 181))
+    #Draw background
+    screen.blit(back.image, back.rect)
+    screen.blit(back.image, back.rect2)
+    screen.blit(back.image, back.rect3)
+    #Make background scroll
+    back.scroll()
+    message_to_screen("Dummy Text",
+                    blue,
+                    -20,
+                    "large")
+    pygame.display.update()
+    pygame.time.delay(7)
+
+    choose = option_menu(screen, [
+                    'Back'], 250, 400, None, 32,1.4,blue,red)
+    if choose == 0:
+        print "Back"
+        start_menu()
+
 def game_over():
     """
     Creates the game over screen that users will see when they jayhawk touches a pipe, causing the player to lose.
@@ -609,10 +639,14 @@ def gameLoop():
                             blue,
                             -50,
                             "large")		     
-            message_to_screen("Press c to play again",	
+            message_to_screen("Press c to go to start screen",	
                             blue,		                            
                             50,		                             
                             "small")	
+            message_to_screen("Press space to play again",  
+                            blue,                                   
+                            80,                                  
+                            "small")    
                           
             pygame.display.update()
             clock.tick(FPS)
@@ -622,6 +656,8 @@ def gameLoop():
                             gameExit = True
                     if event.type == pygame.KEYDOWN:
                             if event.key == pygame.K_c:
+                                    start_menu()
+                            if event.key == pygame.K_SPACE:
                                     gameLoop()
                             if event.key == pygame.K_ESCAPE:
                                     gameExit = True
@@ -641,7 +677,7 @@ def main():
     """
     gameExit = False
     start_menu()
-    gameLoop()
+    #gameLoop()
     while not gameExit:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
