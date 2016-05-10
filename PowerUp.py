@@ -2,7 +2,14 @@ import os, pygame
 from random import randint
 
 def loadImports(path):
-    """Load the powerups in PowerUps folder"""
+    """Load the powerups in PowerUps folder
+    
+    image sources for these powerups:
+    bomb: http://siliconangle.com/files/2012/10/Bomb.png
+    bullet_time: https://pixabay.com/static/uploads/photo/2014/09/03/05/11/matrix-434037__180.png
+    flea: http://api.ning.com/files/Fp4OwEQ0363mq8pUICo5gqdOdRQMhJwrE*TSszGR-2SgWz-Qxx9GUdigIo7B14ITANOVzEkKKN-zNSgS4ztUAffWfpThabfE/flea.png 
+    grenade launcher: http://img.photobucket.com/albums/v359/zanderwitaz/TF2%20Grenade%20Launcher/image005_zps350ccddf.png 
+    """
     files = os.listdir(path)
     imps = []
 
