@@ -2,6 +2,7 @@ import os, pygame
 from random import randint
 
 def loadImports(path):
+    """Load the powerups in PowerUps folder"""
     files = os.listdir(path)
     imps = []
 
@@ -21,13 +22,26 @@ def loadImports(path):
     return (toWrite)
 
 class PowerUp(pygame.sprite.Sprite):
-    
+    """This acts as an Abstract Base Class for custom power ups
+    Attributes that all PowerUp instances share:
+    POWERUP_DURATION: duration of powerup's effects for the Jayhawk
+    POWERUPS_LOADED: init string of powerups included in the PowerUps folder
+    POWERUPS_LOADED_CLEAN: string of powerups
+    """
     POWERUP_DURATION = 5#5seconds
 
     POWERUPS_LOADED = loadImports('PowerUps/')
     POWERUPS_LOADED_CLEAN = POWERUPS_LOADED.replace('__all__ = [', '').replace('\'', '').replace(',', '').replace(']', '')
     
     def __init__(self, color, pos, radius, width, image, effectname):
+        """Params:
+        color: color of PowerUp circle
+        pos: pos of circle
+        radius: radius of circle
+        width: width of circe
+        image: image of effect
+        effectname: effect's name which should be unique
+        """
         #--------------when the PowerUp is floating in the air
         #circular aura
         self.color = color
@@ -55,6 +69,7 @@ class PowerUp(pygame.sprite.Sprite):
         self.duration_remaining = 300#5 seconds * 60 FPS = 300 frame duration
     
     def scroll(self):
+        """make power-ups scroll like the pipes do"""
         self.x -= 1
         self.image_x -= 1
         
@@ -64,44 +79,65 @@ class PowerUp(pygame.sprite.Sprite):
 
     @property
     def circle_color(self):
+        """return color
+        """
         return self.color
     @property
     def circle_pos(self):
+        """return pos
+        """
         return (self.x, self.y)
     @property
     def circle_radius(self):
+        """return radius
+        """
         return self.radius
     @property
     def circle_width(self):
+        """return width
+        """
         return self.width
 
     @property
     def image(self):
+        """return image
+        """
         return self.PowerUp_image
     @property
     def image_rect(self):
+        """return image rect
+        """
         return pygame.Rect(self.image_x, self.image_y, 25, 25)
 
-    def update_duration(self):       
+    def update_duration(self):   
+        """decrement duration of powerup's effect
+        """
         self.duration_remaining -= 1
         if(self.duration_remaining % 3 == 0 or self.duration_remaining % 3 == 1):
             self.PowerUp_duration_bar_length -= 1
 
     @property
     def duration_bar_length(self):
+        """return duration bar length
+        """
         return self.PowerUp_duration_bar_length
     @property
     def duration_expired(self):
+        """return True if duration has expired
+        """
         return (self.duration_remaining <= 0)
 
     
     def effect( self ):
         """Some description that tells you it's abstract,
-        often listing the methods you're expected to supply."""
+        often listing the methods you're expected to supply.
+        The effect that all PowerUps must have
+        """
         raise NotImplementedError( "Should have implemented this" )
 
     def effect_expire(self):
         """Some description that tells you it's abstract,
         often listing the methods you're expected to supply.
-        Effect that occurs upon duration_expired"""
+        Effect that occurs upon duration_expired
+        """
         raise NotImplementedError( "Should have implemented this" )
