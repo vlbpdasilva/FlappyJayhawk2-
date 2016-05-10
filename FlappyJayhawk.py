@@ -736,7 +736,8 @@ def gameLoop():
         #Draw Jayhawk
         screen.blit(jayhawk.image, jayhawk.rect)
 
-        
+        if(jayhawk.grounded()):
+            gameOver = True
 
 
 	   
