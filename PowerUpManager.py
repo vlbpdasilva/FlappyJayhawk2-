@@ -7,7 +7,12 @@ from PowerUp import *
 from PowerUps import * 
 
 class PowerUpManager():
-
+    """PowerUpManager holds all the PowerUps
+    
+    Attributes for all instances:
+    POWERUPS_LOADED_STR: some data structure that holds power-up names
+    SCREEN: 
+    """
     POWERUPS_LOADED_STR = PowerUp.POWERUPS_LOADED_CLEAN.split(' ')
 
     SCREEN = pygame.display.set_mode((600,500))
@@ -36,7 +41,8 @@ class PowerUpManager():
         print PowerUp.POWERUPS_LOADED_CLEAN
         print PowerUp.POWERUPS_LOADED#.split( )[2].split('\'')
 
-    def spawn_management(self):        
+    def spawn_management(self):
+        """spawn a new powerup at random"""
         #spawn powerup at random
         if(settings.pipeManager.delayBeforeNextPipeIncr == 0):
             del self.q[:]
@@ -58,8 +64,10 @@ class PowerUpManager():
                 self.powerupList.append(powerupTupleElement[0])
 
     def obtained_management(self):
-        """if duration hasnt expired call effect()
-        if duration HAS expired call effect_expire()"""
+        """for all obtained powerups...
+        if duration hasnt expired call effect()
+        if duration HAS expired call effect_expire()
+        """
         #draw powerup duration bar
         for index, powerupObtainedElement in enumerate(self.powerupObtainedList):   
             powerupObtainedElement.update_duration()
@@ -71,11 +79,13 @@ class PowerUpManager():
                 powerupObtainedElement.effect_expire()
 
     def collision(self, powerup):
-        """Takes in bottom pipes and the bird and returns true if there is a collision"""
+        """Takes in bottom pipes and the bird and returns true if there is a collision
+        """
         return (Jayhawk.Y+60 > powerup.y and Jayhawk.Y-25 < powerup.y) and (Jayhawk.X+60 > powerup.x and Jayhawk.X-25 < powerup.x)
         
 
     def draw_powerups(self):
+        """draw powerups in the air or as duration bars"""
         #draw powerups that are spawned in the air
         for powerupElement in self.powerupList:
             pygame.draw.circle(PowerUpManager.SCREEN, powerupElement.circle_color, powerupElement.circle_pos,
@@ -88,6 +98,8 @@ class PowerUpManager():
                self.powerupList.pop(0)
 
     def re_init_powerup(self, effectname):
+        """reinit the powerup
+        """
         for index, powerupElement in enumerate(self.powerupObtainedList):
             if powerupElement.effectname == effectname:
                 break
