@@ -23,19 +23,19 @@ Python documentation regarding classes: https://docs.python.org/2/tutorial/class
 """
 
 #Import
-import sys, pygame, time, os, datetime
-#import flappymenu as dm
+import sys, pygame, time, os
 from random import randint
-
 from Jayhawk import *
 from Pipe import *
 from Background import *
-from database import *
-  
 
 #Initialization
 pygame.init()
-database().__init__()
+
+#Initialization of sound tools
+#Taken from http://thepythongamebook.com/en:pygame:step010
+#All sounds created using http://www.bfxr.net/
+pygame.mixer.pre_init(44100, -16, 2, 2048)
 
 #Screen Initializations
 pygame.display.set_caption("Flappy Jayhawk")
@@ -57,19 +57,7 @@ smallFont = pygame.font.SysFont("comicsansms", 14)
 medFont = pygame.font.SysFont("comicsansms", 25)
 largeFont = pygame.font.SysFont("comicsansms", 50)
 
-class objRef():
-    """Simulating pointers in python can be done explicitly.
-    Source: http://stackoverflow.com/a/1145848
-    Calling a function of a module from a string with the function's name in Python can be compressed to: result = getattr(foo, 'bar')()
-    Source: http://stackoverflow.com/a/3071
-    Python using getattr to call function with variable parameters You could try something like: getattr(foo, bar)(*params)
-    Source: http://stackoverflow.com/a/11781292
 
-    Note: cannot be used to get instance values of an object"""
-    def __init__(self, obj): self.obj = obj
-    def get(self):    return self.obj
-    def set(self, obj):      self.obj = obj
-    def call(self, methodToCall, params):   return getattr(self.obj, methodToCall)(*params)
 
 def load_images():
     """Load all images required by the game and return a dict of them.
@@ -99,109 +87,6 @@ def load_images():
             'background3': load_image('background3.png'),
             'pipe': load_image('pipe.png')
             }
-
-def option_menu(screen, menu, x_pos = 200, y_pos = 250, font = None,
-            size = 70, distance = 1.4, fgcolor = (255,255,255),
-            cursorcolor = (255,0,0), exitAllowed = True):
-    pygame.font.init()
-    if font == None:
-        myfont = pygame.font.Font(None, size)
-    else:
-        myfont = pygame.font.SysFont(font, size)
-    cursorpos = 0
-    renderWithChars = False
-    for i in menu:
-        if renderWithChars == False:
-            text =  myfont.render(str(cursorpos + 1)+".  " + i,
-                True, fgcolor)
-        else:
-            text =  myfont.render(chr(char)+".  " + i,
-                True, fgcolor)
-            char += 1
-        textrect = text.get_rect()
-        textrect = textrect.move(x_pos, 
-                   (size // distance * cursorpos) + y_pos)
-        screen.blit(text, textrect)
-        pygame.display.update(textrect)
-        cursorpos += 1
-        if cursorpos == 9:
-            renderWithChars = True
-            char = 65
-
-    # Draw the ">", the Cursor
-    cursorpos = 0
-    cursor = myfont.render(">", True, cursorcolor)
-    cursorrect = cursor.get_rect()
-    cursorrect = cursorrect.move(x_pos - (size // distance),
-                 (size // distance * cursorpos) + y_pos)
-
-    # The whole While-loop takes care to show the Cursor, move the
-    # Cursor and getting the Keys (1-9 and A-Z) to work...
-    ArrowPressed = True
-    exitMenu = False
-    clock = pygame.time.Clock()
-    filler = pygame.Surface.copy(screen)
-    fillerrect = filler.get_rect()
-    while True:
-        clock.tick(30)
-        if ArrowPressed == True:
-            screen.blit(filler, fillerrect)
-            pygame.display.update(cursorrect)
-            cursorrect = cursor.get_rect()
-            cursorrect = cursorrect.move(x_pos - (size // distance),
-                         (size // distance * cursorpos) + y_pos)
-            screen.blit(cursor, cursorrect)
-            pygame.display.update(cursorrect)
-            ArrowPressed = False
-        if exitMenu == True:
-            break
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                return -1
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE and exitAllowed == True:
-                    if cursorpos == len(menu) - 1:
-                        exitMenu = True
-                    else:
-                        cursorpos = len(menu) - 1; ArrowPressed = True
-
-
-                # This Section is huge and ugly, I know... But I don't
-                # know a better method for this^^
-                if event.key == pygame.K_1:
-                    cursorpos = 0; ArrowPressed = True; exitMenu = True
-                elif event.key == pygame.K_2 and len(menu) >= 2:
-                    cursorpos = 1; ArrowPressed = True; exitMenu = True
-                elif event.key == pygame.K_3 and len(menu) >= 3:
-                    cursorpos = 2; ArrowPressed = True; exitMenu = True
-                elif event.key == pygame.K_4 and len(menu) >= 4:
-                    cursorpos = 3; ArrowPressed = True; exitMenu = True
-                elif event.key == pygame.K_5 and len(menu) >= 5:
-                    cursorpos = 4; ArrowPressed = True; exitMenu = True
-                elif event.key == pygame.K_6 and len(menu) >= 6:
-                    cursorpos = 5; ArrowPressed = True; exitMenu = True
-                elif event.key == pygame.K_7 and len(menu) >= 7:
-                    cursorpos = 6; ArrowPressed = True; exitMenu = True
-                
-                elif event.key == pygame.K_UP:
-                    ArrowPressed = True
-                    if cursorpos == 0:
-                        cursorpos = len(menu) - 1
-                    else:
-                        cursorpos -= 1
-                elif event.key == pygame.K_DOWN:
-                    ArrowPressed = True
-                    if cursorpos == len(menu) - 1:
-                        cursorpos = 0
-                    else:
-                        cursorpos += 1
-                elif event.key == pygame.K_KP_ENTER or \
-                     event.key == pygame.K_RETURN:
-                            exitMenu = True
-    
-    return cursorpos
-
-
 
 def start_menu():
     """Create a start menu that gives the users the title of the game and the creators of the game
@@ -241,35 +126,13 @@ def start_menu():
                             blue,
                             -20,
                             "small")
-        """message_to_screen("Press SPACE to play!!",
+        message_to_screen("Press SPACE to play!!",
                             red,
                             20,
-                            "medium")"""
-        pygame.display.update()
-        
-        choose = option_menu(screen, [
-                        'Start Game',
-                        'Options',
-                        'Manual',
-                        'Show Highscore',
-                        'Quit Game'], 200,250,None,32,1.4,red,red)
-
-        if choose == 0:
-            print "You choose 'Start Game'."
-            intro = False
-        elif choose == 1:
-            print "You choose 'Options'."
-        elif choose == 2:
-            print "You choose 'Manual'."
-        elif choose == 3:
-            print "You choose 'Show Highscore'."
-        elif choose == 4:
-            print "You choose 'Quit Game'."
-            pygame.quit()
+                            "medium")
 
         pygame.display.update()
-
-        clock.tick(FPS)
+        pygame.time.delay(7)
         
 def game_over():
     """
@@ -320,6 +183,8 @@ def pipe_collisions_top(bird,pipes):
     
     if bird.y < (504 + pipes.y) and (bird.x+50 > pipes.x and bird.x-30 < pipes.x):
         return True
+    if bird.bottom  > 462:
+        return True
     return bird.colliderect(pipes)
 	
     
@@ -327,27 +192,14 @@ def pipe_collisions_bot(bird,pipes):
     """Takes in bottom pipes and the bird and returns true if there is a collision"""
     if bird.y + 60 > pipes.y and (bird.x+50 > pipes.x and bird.x-30 < pipes.x):
         return True
+    if bird.bottom  > 462:
+        return True
     return bird.colliderect(pipes)
     
 def pipe_passed(bird,pipes):
     """Pass pipe and increment score"""
     if bird.y > pipes.y and (bird.x+30 == pipes.x):
         return True   
-
-def difficulty_change(difficulty):
-    if(difficulty == 1):
-        Jayhawk.gravity_accel = 1
-        Pipe.GAP = 200
-    elif(difficulty == 2):
-        Jayhawk.gravity_accel = 2
-        Pipe.GAP = 150
-    elif(difficulty == 3):
-        Jayhawk.gravity_accel = 3
-        Pipe.GAP = 125
-
-"""def objReftest(c):
-    demo for objRef and calling methods  
-    c.call('test', [0, 'bar'])"""
         
 def gameLoop():
     """
@@ -358,10 +210,6 @@ def gameLoop():
     gameExit = False
     
     images = load_images();
-    
-    #Initial difficulty setting
-    #difficulty = 1;
-    difficulty_change(1)
 
     #Scrolling background declaration
     back = Background(images['background'], images['background'].get_size(), height)
@@ -383,20 +231,24 @@ def gameLoop():
     piprect = pip.get_rect()
     piprect = piprect.move(5,0)
 
-    #demo for objRef and calling methods    
-    #piplol = objRef(Pipe(images['pipe'], width))
-    #piplol.call('test',[42, 'bar'])
-    #pipRef = objRef(pipe)#pipe declared above
-    #objReftest(pipRef)
-
     #Rect declaration of screen
     screenrect = screen.get_rect()
+
+    #Initial difficulty setting
+    difficulty = 1;
 
     #Screen fill color variable
     fill = (255, 231, 181);
 
     #initialize score
     score = 0
+
+    #Load game sounds
+    try:
+        jump = pygame.mixer.Sound(os.path.join('Sounds','Jump.ogg'))  #load sound
+        fail = pygame.mixer.Sound(os.path.join('Sounds','Fail.ogg'))  #load sound
+    except:
+        raise UserWarning, "could not load or play soundfiles in 'Sounds' folder"
     
     while not gameExit:
         for event in pygame.event.get():
@@ -413,22 +265,23 @@ def gameLoop():
                     sys.exit
                 if event.key == pygame.K_UP: 
                     jayhawk.jump()
+                    jump.play();
                 if event.key == pygame.K_1:
-                    #difficulty = 1;
-                    difficulty_change(1)
-                    back = Background(images['background'], images['background'].get_size(), height);
-                    fill = (255, 231, 181);
+                    if(difficulty != 1):
+                        difficulty = 1;
+                        back = Background(images['background'], images['background'].get_size(), height);
+                        fill = (255, 231, 181);
                 if event.key == pygame.K_2:
-                    #difficulty = 2;
-                    difficulty_change(2)
-                    ### background image from http://freetems.net/files/2143_t2.png
-                    back = Background(images['background2'], images['background2'].get_size(), height);
-                    fill = (17, 131, 255);
+                    if(difficulty != 2):
+                        difficulty = 2;
+                        ### background image from http://freetems.net/files/2143_t2.png
+                        back = Background(images['background2'], images['background2'].get_size(), height);
+                        fill = (17, 131, 255);
                 if event.key == pygame.K_3:
-                    #difficulty = 3;
-                    difficulty_change(3)
-                    ### background image from https://kanimate.files.wordpress.com/2015/05/3.jpg
-                    back = Background(images['background3'], images['background3'].get_size(), height);           
+                    if(difficulty != 3):
+                        difficulty = 3;
+                        ### background image from https://kanimate.files.wordpress.com/2015/05/3.jpg
+                        back = Background(images['background3'], images['background3'].get_size(), height);           
 
         jayhawk.updatePosition()
                 
@@ -445,6 +298,7 @@ def gameLoop():
         
         #Make background scroll
         back.scroll()
+        
     
         #Generates new pipes by appending them to the end of Pipe array
         delayBeforeNextPipeIncr = delayBeforeNextPipeIncr + 1
@@ -470,12 +324,11 @@ def gameLoop():
             #if (pipe_collisions_top(jayrect,topPipeRect)):
             if (pipe_collisions_top(jayhawk.rect,topPipeRect)):
                 gameOver = True
-                database().addScore(score)
+                fail.play();
             #if (pipe_collisions_bot(jayrect,botPipeRect)):
             if (pipe_collisions_bot(jayhawk.rect,botPipeRect)):   
                 gameOver = True
-                database().addScore(score)
-
+                fail.play();
 
 	#Implements score
         for pipeElement in pipeList:
@@ -484,8 +337,7 @@ def gameLoop():
         message_to_screen(str(score),
 			blue,
 			-200,
-			"large")
-                                 
+			"large")    
         while gameOver == True:
                        
             screen.fill(fill)
@@ -494,19 +346,18 @@ def gameLoop():
             screen.blit(back.image, back.rect2)
             screen.blit(back.image, back.rect3)		           
             #Make background scroll		              
-            #back.scroll()	
-
-            #Draw final pipe location
-            for pipeElement in pipeList:
-                    screen.blit(pipeElement.image_top, pipeElement.rect_top)
-                    screen.blit(pipeElement.image_bot, pipeElement.rect_bot)
+            back.scroll()	
 		
             #Draw Jayhawk
             jayhawk.updatePosition()
             jayhawk.clamp()
             screen.blit(jayhawk.image, jayhawk.rect)
             
-                        
+            #Draw final pipe location
+            for pipeElement in pipeList:
+                    screen.blit(pipeElement.image_top, pipeElement.rect_top)
+                    screen.blit(pipeElement.image_bot, pipeElement.rect_bot)
+            
             #Draw message
             message_to_screen(str(score),
                             blue,

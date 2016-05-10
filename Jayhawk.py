@@ -51,8 +51,7 @@ class Jayhawk(pygame.sprite.Sprite):
         super(Jayhawk, self).__init__()
         self.x = x
         self.y = y
-        self.Jayhawk_image = image
-        self.Jayhawk_image = self.Jayhawk_image.convert_alpha()
+        self.Jayhawk_image = image  
         self.Jayhawk_image = pygame.transform.scale(self.Jayhawk_image, scale)
         self.original = self.Jayhawk_image
         self.Jayhawk_mask = pygame.mask.from_surface(self.Jayhawk_image)
