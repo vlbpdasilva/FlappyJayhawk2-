@@ -723,7 +723,7 @@ def gameLoop():
         pipeManager.draw_pipes(1)
         pipeManager.spawn_management()
         if(pipeManager.score(jayhawk.rect)):
-            score = score + 1
+            score = score + settings.gravity_accel
             
         message_to_screen(str(score),
 			blue,
