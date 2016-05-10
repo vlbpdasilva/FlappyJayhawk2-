@@ -20,3 +20,6 @@ def init():
     #game's global objects
     global jayhawk
     global pipeManager
+
+    global powerup_toggle
+    powerup_toggle = True

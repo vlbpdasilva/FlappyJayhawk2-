@@ -271,6 +271,8 @@ def start_menu():
             intro = False
         elif choose == 1:
             print "You choose 'Options'."
+            option_screen()
+            intro = False
         elif choose == 2:
             print "You choose 'Instructions'."
             instruction()
@@ -283,6 +285,123 @@ def start_menu():
 
         
         clock.tick(FPS)
+
+def option_screen():
+    """
+    Gives users ability to turn on/off sound and PowerUps"""
+    for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit
+    images = load_images();
+    #Scrolling background declaration
+    back = Background(images['background'], images['background'].get_size(), height)
+
+    screen.fill((255, 231, 181))
+    #Draw background
+    screen.blit(back.image, back.rect)
+    screen.blit(back.image, back.rect2)
+    screen.blit(back.image, back.rect3)
+    #Make background scroll
+    back.scroll()
+
+    message_to_screen("Options",
+                        blue,
+                        -100,
+                        "large")
+
+    pygame.display.update()
+    pygame.time.delay(7)
+
+    choose = option_menu(screen, [
+                    'Sound',
+                    'PowerUps',
+                    'Back'], 250, 200, None, 32,1.4,blue,red)
+    if choose == 0:
+        print "Sound"
+        sound_menu()
+    elif choose == 1:
+        powerup_menu()
+    elif choose == 2:
+        start_menu()
+
+def sound_menu():
+    """Gives users ability to turn on off sound"""
+    for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit
+    images = load_images();
+    #Scrolling background declaration
+    back = Background(images['background'], images['background'].get_size(), height)
+
+    screen.fill((255, 231, 181))
+    #Draw background
+    screen.blit(back.image, back.rect)
+    screen.blit(back.image, back.rect2)
+    screen.blit(back.image, back.rect3)
+    #Make background scroll
+    back.scroll()
+
+    message_to_screen("Sound",
+                        blue,
+                        -100,
+                        "large")
+
+    pygame.display.update()
+    pygame.time.delay(7)
+
+    choose = option_menu(screen, [
+                    'ON',
+                    'OFF',
+                    'Back'], 250, 200, None, 32,1.4,blue,red)
+    if choose == 0:
+        settings.sound_toggle = True
+        option_screen()
+    elif choose == 1:
+        settings.sound_toggle = False
+        option_screen()
+    elif choose == 2:
+        option_screen()
+
+def powerup_menu():
+    """Turn on/off powerups"""
+    for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit
+    images = load_images();
+    #Scrolling background declaration
+    back = Background(images['background'], images['background'].get_size(), height)
+
+    screen.fill((255, 231, 181))
+    #Draw background
+    screen.blit(back.image, back.rect)
+    screen.blit(back.image, back.rect2)
+    screen.blit(back.image, back.rect3)
+    #Make background scroll
+    back.scroll()
+
+    message_to_screen("PowerUps",
+                        blue,
+                        -100,
+                        "large")
+
+    pygame.display.update()
+    pygame.time.delay(7)
+
+    choose = option_menu(screen, [
+                    'ON',
+                    'OFF',
+                    'Back'], 250, 200, None, 32,1.4,blue,red)
+    if choose == 0:
+        settings.powerup_toggle = True
+        option_screen()
+    elif choose == 1:
+        settings.powerup_toggle = False
+        option_screen()
+    elif choose == 2:
+        option_screen()
 
 def instruction():
     """
@@ -499,7 +618,8 @@ def gameLoop():
                     sys.exit
                 if event.key == pygame.K_UP: 
                     jayhawk.jump()
-                    jump.play();
+                    if(settings.sound_toggle):
+                        jump.play();
                 if event.key == pygame.K_1:
                     if(Jayhawk.gravity_accel != 1):
                         #print(Jayhawk.gravity_accel);
@@ -556,9 +676,10 @@ def gameLoop():
             if(powerupObtainedElement.duration_expired):
                 powerupObtainedList.remove(powerupObtainedElement)
         #-----------------------------------------------"""
-        powerupManager.draw_powerups()
-        powerupManager.spawn_management()
-        powerupManager.obtained_management()
+        if(settings.powerup_toggle):
+            powerupManager.draw_powerups()
+            powerupManager.spawn_management()
+            powerupManager.obtained_management()
         
         #Make background scroll
         back.scroll()
