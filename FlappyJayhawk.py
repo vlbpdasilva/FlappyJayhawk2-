@@ -247,7 +247,7 @@ def start_menu():
 
         
 
-        message_to_screen("Flappy JayHawks",
+        message_to_screen("FLAPPY JAYHAWK",
                             blue,
                             -100,
                             "large")
