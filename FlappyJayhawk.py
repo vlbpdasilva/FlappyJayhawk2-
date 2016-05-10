@@ -616,25 +616,22 @@ def gameLoop():
                     gameExit = True
                     pygame.quit()
                     sys.exit
-                if event.key == pygame.K_UP: 
+                if ((event.key == pygame.K_UP) OR (event.key == pygame.K_w) OR (event.key == pygame.K_SPACE)):
                     jayhawk.jump()
                     if(settings.sound_toggle):
                         jump.play();
-                if event.key == pygame.K_1:
+                if event.key == pygame.K_1 OR event.key == pygame.K_KP1:
                     if(Jayhawk.gravity_accel != 1):
-                        #print(Jayhawk.gravity_accel);
                         difficulty_change(1)
                         back = Background(images['background'], images['background'].get_size(), height);
                         fill = (255, 231, 181);
-                if event.key == pygame.K_2:
+                if event.key == pygame.K_2 OR event.key == pygame.K_KP2:
                     if(Jayhawk.gravity_accel != 2):
-                        #difficulty = 2;
-                        #print(Jayhawk.gravity_accel);
                         difficulty_change(2)
                         ### background image from http://freetems.net/files/2143_t2.png
                         back = Background(images['background2'], images['background2'].get_size(), height);
                         fill = (17, 131, 255);
-                if event.key == pygame.K_3:
+                if event.key == pygame.K_3 OR event.key == pygame.K_KP3:
                     if(Jayhawk.gravity_accel != 3):
                         #difficulty = 3;
                         #print(Jayhawk.gravity_accel);
