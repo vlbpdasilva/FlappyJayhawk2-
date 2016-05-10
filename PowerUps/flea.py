@@ -3,7 +3,8 @@ import settings
 from Jayhawk import *
 from PowerUp import *
 class flea(PowerUp):
-    
+    """You become a flea and jump really high
+    """
     def __init__(self):
         super(flea, self).__init__((255,255,0), (0,0), 20, 0,
                                                pygame.image.load(os.path.join('.', 'images', 'jayhawk.png')),
@@ -12,7 +13,7 @@ class flea(PowerUp):
         self.sizeScale = settings.jayhawk.image.get_width()
         
     def effect(self):
-        """shrinks the jayhawk down to flea size"""
+        """shrinks the jayhawk down to flea size and the Jayhawk defies gravity"""
         Jayhawk.gravity_accel = 0.5
         self.sizeScale -= 5
         if(self.sizeScale < 10):
@@ -21,7 +22,7 @@ class flea(PowerUp):
             settings.jayhawk.set_image(pygame.image.load(os.path.join('.', 'images', 'jayhawk.png')), (self.sizeScale, self.sizeScale))            
 
     def effect_expire(self):
-        """restores the jayhawk's size"""
+        """restores the jayhawk's size and the Jayhawk must obey the laws of gravity again"""
         Jayhawk.gravity_accel = settings.gravity_accel
         self.sizeScale += 5
         if(self.sizeScale > 60):
