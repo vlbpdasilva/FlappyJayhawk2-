@@ -773,12 +773,14 @@ def gameLoop():
             
         if(pipeManager.collision(jayhawk.rect)):
             gameOver = True
+            fail.play()
         
         #Draw Jayhawk
         screen.blit(jayhawk.image, jayhawk.rect)
 
         if(jayhawk.grounded()):
             gameOver = True
+            fail.play()
 
 
 	scoreAdded = False   
