@@ -112,6 +112,9 @@ def load_images():
 def option_menu(screen, menu, x_pos = 200, y_pos = 250, font = None,
             size = 70, distance = 1.4, fgcolor = (255,255,255),
             cursorcolor = (255,0,0), exitAllowed = True):
+    """
+    create an option menu with a cursor to allow users to navigate through Options
+    """
     pygame.font.init()
     if font == None:
         myfont = pygame.font.Font(None, size)
@@ -282,6 +285,9 @@ def start_menu():
         clock.tick(FPS)
 
 def instruction():
+    """
+    Gives users instructions for the game
+    """
     for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -297,10 +303,18 @@ def instruction():
     screen.blit(back.image, back.rect3)
     #Make background scroll
     back.scroll()
-    message_to_screen("Dummy Text",
+    message_to_screen("Press the up arrow key to make the Jayhawk jump upward",
                     blue,
-                    -20,
-                    "large")
+                    -50,
+                    "medium")
+    message_to_screen("Collect power ups for a better chance of survival",
+                    blue,
+                    0,
+                    "medium")
+    message_to_screen("Avoid evil pipes at all costs!!",
+                    blue,
+                    50,
+                    "medium")
     pygame.display.update()
     pygame.time.delay(7)
 
