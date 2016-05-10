@@ -1,6 +1,8 @@
 import pygame
 from random import randint     
 
+
+
 class Pipe(pygame.sprite.Sprite):
     """
     x: The bird's X coordinate.
@@ -18,7 +20,7 @@ class Pipe(pygame.sprite.Sprite):
     CLIMB_DURATION: The number of milliseconds it takes the bird to
         execute a complete climb.
     """
-    
+    GAP = 200
     
     def __init__(self, image, game_window_width):
         """Initialise a new Pipe instance.
@@ -30,13 +32,15 @@ class Pipe(pygame.sprite.Sprite):
         super(Pipe, self).__init__()
         self.x = game_window_width
         self.reset_x = game_window_width
-        self.y = randint(25, 275)
+        self.y = randint(25, 475 - Pipe.GAP)#475 should be game_window_height and game_window_size should be passed as param
 
         self.Pipe_image_top = image
+        self.Pipe_image_top = self.Pipe_image_top.convert_alpha()
         self.Pipe_image_top = pygame.transform.rotate(self.Pipe_image_top, 180)
         self.Pipe_mask_top = pygame.mask.from_surface(self.Pipe_image_top)
         
         self.Pipe_image_bot = image
+        self.Pipe_image_bot = self.Pipe_image_bot.convert_alpha()
         self.Pipe_mask_bot = pygame.mask.from_surface(self.Pipe_image_bot)
 
 
@@ -49,9 +53,14 @@ class Pipe(pygame.sprite.Sprite):
         self.x = self.x - 1
         if(self.x + 600 == 0):
             self.x = self.reset_x
-            self.y = randint(25, 375)
             return False
         return True
+
+    """def test(self, a, b):
+        Used together with objRef in FlappyJayhawk.py as a demo
+        print a
+        self.y = a
+        print b"""
     
     @property
     def image_top(self):
@@ -89,5 +98,5 @@ class Pipe(pygame.sprite.Sprite):
     def rect_bot(self):
         """Get the bot pipe's position, width, and height, as a pygame.Rect.
         """
-        return pygame.Rect(self.x, self.y + 200, 25, 25)
+        return pygame.Rect(self.x, self.y + Pipe.GAP, 25, 25)
 
