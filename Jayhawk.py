@@ -6,22 +6,18 @@ class Jayhawk(pygame.sprite.Sprite):
     Descending will occur when the player is not causing the Jayhawk to
     ascend. Colliding with pipes will cause the Jayhawk to lose health.
     At 0 health, the player loses the game.
-    Attributes: (NOTE: THIS WILL BE CHANGED. these are not the actual attributes or constants,
-                        they are only here as an example of documentation for now)
-    x: The bird's X coordinate.
-    y: The bird's Y coordinate.
-    msec_to_climb: The number of milliseconds left to climb, where a
-        complete climb lasts Bird.CLIMB_DURATION milliseconds.
-    Constants:
-    WIDTH: The width, in pixels, of the bird's image.
-    HEIGHT: The height, in pixels, of the bird's image.
-    SINK_SPEED: With which speed, in pixels per millisecond, the bird
-        descends in one second while not climbing.
-    CLIMB_SPEED: With which speed, in pixels per millisecond, the bird
-        ascends in one second while climbing, on average.  See also the
-        Bird.update docstring.
-    CLIMB_DURATION: The number of milliseconds it takes the bird to
-        execute a complete climb.
+    
+    Attributes that all Jayhawk instances share: 
+    isGoingUp:(deprecated) flag to detect if Jayhawk is going up, up_counter is changed as a result
+    isJumping: flag to detect if jump has been called to reset Jayhawk's speed back to reg_speed
+    up_speed:(deprecated) the speed going up
+    down_speed:(deprecated) the speed going down
+    reg_speed: Jayhawk's Jumping speed
+    gravity_accel: Jayhawk's Speed decreases at this rate
+    up_counter:(deprecated) up_speed is changed based on up_counter
+    down_counter:(deprecated) down_speed is changed based on down_counter
+    X: The bird's X coordinate.
+    Y: The bird's Y coordinate.
     """
 
     #is the Jayhawk moving up (jumping)?
@@ -118,6 +114,8 @@ class Jayhawk(pygame.sprite.Sprite):
         self.Jayhawk_image = self.rot_center(self.Jayhawk_image, -1 * Jayhawk.reg_speed)
 
     def gravity(self):
+        """apply rate of gravity to change the Jayhawk's speed
+        """
         if(Jayhawk.isJumping):
             Jayhawk.reg_speed = -40 / 3
             Jayhawk.isJumping = False
@@ -129,7 +127,8 @@ class Jayhawk(pygame.sprite.Sprite):
 
     def rot_center(self, image, angle):
         """rotate an image while keeping its center and size
-        Source: http://pygame.org/wiki/RotateCenter?parent= """
+        Source: http://pygame.org/wiki/RotateCenter?parent= 
+        """
         orig_rect = image.get_rect()
         rot_image = pygame.transform.rotate(image, angle)
         rot_rect = orig_rect.copy()
@@ -157,6 +156,8 @@ class Jayhawk(pygame.sprite.Sprite):
             self.y = 440
 
     def set_image(self, image, scale):
+        """Change the jayhawk's image and scale
+        """
         self.Jayhawk_image = image
         self.Jayhawk_image = self.Jayhawk_image.convert_alpha()
         self.Jayhawk_image = pygame.transform.scale(self.Jayhawk_image, scale)
@@ -172,11 +173,12 @@ class Jayhawk(pygame.sprite.Sprite):
     def mask(self):
         """Get a bitmask for use in collision detection.
         The bitmask excludes all pixels in self.image with a
-        transparency greater than 127."""
+        transparency greater than 127.
+        """
         return self.Jayhawk_mask
 
     @property
     def rect(self):
         """Get the bird's position, width, and height, as a pygame.Rect.
-            THE WIDTH AND HEIGHT PARAMETERS DON'T WORK?"""
+        """
         return pygame.Rect(self.x, self.y, 25, 25)
