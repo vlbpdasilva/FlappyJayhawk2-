@@ -33,10 +33,13 @@ class database:
         """print all the scores in the high scores table
         """
         if(self.working):
-            self.mycursor.execute("SELECT * "
-                "FROM  `scores_alltime` "
+            self.mycursor.execute("SELECT score "
+                "FROM scores_alltime "
+                "ORDER BY score DESC "
                 "LIMIT 0 , 30")
             print(self.mycursor.fetchall())
+            return self.mycursor.fetchall()
+        return "COULD NOT CONNECT TO DATABASE"
         """to be implemented...
         self.mycursor.execute("SELECT COUNT(*) FROM fooTable")
                 UPDATE table_name
