@@ -4,21 +4,13 @@ from random import randint
 
 
 class Pipe(pygame.sprite.Sprite):
-    """
-    x: The bird's X coordinate.
-    y: The bird's Y coordinate.
-    msec_to_climb: The number of milliseconds left to climb, where a
-        complete climb lasts Bird.CLIMB_DURATION milliseconds.
-    Constants:
-    WIDTH: The width, in pixels, of the bird's image.
-    HEIGHT: The height, in pixels, of the bird's image.
-    SINK_SPEED: With which speed, in pixels per millisecond, the bird
-        descends in one second while not climbing.
-    CLIMB_SPEED: With which speed, in pixels per millisecond, the bird
-        ascends in one second while climbing, on average.  See also the
-        Bird.update docstring.
-    CLIMB_DURATION: The number of milliseconds it takes the bird to
-        execute a complete climb.
+    """The main obstacle in the game. Pipe will represent a pair of pipes that appear together in tandem top and bottom positions.
+    Pipe's exact position is random. Spawning of Pipe will occur at a set interval. Pipe will scroll toward the Jayhawk.
+    Upon collision with Pipe, Jayhawk takes massive damage falling and becoming unable to get up thus ending the game.
+    Passing Pipe increments score counter.
+    
+    Attributes that all Pipe instances share:
+    GAP: the gap between top and bottom pipes in the pipe pair
     """
     GAP = 200
     
@@ -56,12 +48,6 @@ class Pipe(pygame.sprite.Sprite):
             self.x = self.reset_x
             return False
         return True
-
-    """def test(self, a, b):
-        Used together with objRef in FlappyJayhawk.py as a demo
-        print a
-        self.y = a
-        print b"""
     
     @property
     def image_top(self):

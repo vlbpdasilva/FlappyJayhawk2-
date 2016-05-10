@@ -155,6 +155,11 @@ class Jayhawk(pygame.sprite.Sprite):
         elif(self.y > 440):
             self.y = 440
 
+    def grounded(self):
+        """collision detection for bottom of screen
+        """
+        return(self.rect.bottom  > 462)
+
     def set_image(self, image, scale):
         """Change the jayhawk's image and scale
         """

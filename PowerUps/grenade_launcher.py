@@ -4,12 +4,18 @@ from random import randint
 from PowerUp import *
 from Jayhawk import *
 class grenade_launcher(PowerUp):
+    """The most overpowered power up ever. A path of destruction lays in your wake. All pipes touched by grenades are 'destroyed'
+    Attributes:
+    SCREEN: draw stuff on screen
+    GRENADE_LIST: list of grenades that have been launched
+    GRENADE_LAUNCHED: detect when grenade is launched during jump so you don't spam grenades
+    """
     SCREEN = pygame.display.set_mode((600,500))
     GRENADE_LIST = []
     GRENADE_LAUNCHED = False
     def __init__(self):
         super(grenade_launcher, self).__init__((0,0,0), (0,0), 20, 0,
-                                               pygame.image.load(os.path.join('.', 'images', 'jayhawk.png')),
+                                               pygame.image.load(os.path.join('.', 'images', 'grenade_launcher.png')),
                                                'grenade_launcher')
 
     def effect(self):
@@ -29,9 +35,14 @@ class grenade_launcher(PowerUp):
         self.update_grenade()
 
     def effect_expire(self):
+        """Let grenades respect the laws of existence and allow them to go off the screen before deconstructing them
+        """
         self.update_grenade()
 
     def update_grenade(self):
+        """In the grenade_list, update the positions of all grenades and detect collision
+        Upon collision, 'destroy' pipes by moving them off the screen
+        """
         for grenadeElement in grenade_launcher.GRENADE_LIST:
             grenadeElement.updatePosition()
             grenadeElement_rect = pygame.draw.circle(grenade_launcher.SCREEN, (0,0,0), grenadeElement.pos, 5, 0)
@@ -45,22 +56,9 @@ class grenade_launcher(PowerUp):
                         settings.pipeManager.pipeList[collision[0]].y_top = 0
                     else:
                         settings.pipeManager.pipeList[collision[0]].y_bot = 500
-        
-    """def load_image(img_file_name):
-        Return the loaded pygame image with the specified file name.
-        This function looks for images in the game's images folder
-        (./images/).  All images are converted before being returned to
-        speed up blitting.
-        Arguments:
-        img_file_name: The file name (including its extension, e.g.
-            '.png') of the required image, without a file path.
-        
-        file_name = os.path.join('.', 'images', img_file_name)
-        img = pygame.image.load(file_name)
-        img.convert()
-        return img"""
 
 class grenade:
+    """A circle that represents a grenade"""
     def __init__(self, x, y):
         self.x = x
         self.y = y
@@ -68,13 +66,16 @@ class grenade:
         self.y_speed = -1 * randint(5,20)
         
     def updatePosition(self):
+        """update position of grenade based on its speed"""
         self.gravity()
         self.y += self.y_speed
         self.x += self.x_speed
 
     def gravity(self):
+        """change speed based on gravity accel"""
         self.y_speed += settings.gravity_accel
 
     @property    
     def pos(self):
+        """return pos"""
         return (int(self.x), int(self.y))

@@ -3,12 +3,18 @@ import settings
 from PowerUp import *
 class bomb(PowerUp):
 
+    """An explosive powerup
+    Attributes:
+    SCREEN: screen
+    EXPLOSION_COLORS: an array of colors that appear in the explosion
+    """
+
     SCREEN = pygame.display.set_mode((600,500))
     EXPLOSION_COLORS = [(200,0,0), (255,0,0), (200,200,0), (255,255,0)]
     
     def __init__(self):
         super(bomb, self).__init__((255,0,0), (0,0), 20, 0,
-                                               pygame.image.load(os.path.join('.', 'images', 'jayhawk.png')),
+                                               pygame.image.load(os.path.join('.', 'images', 'bomb.png')),
                                                'bomb')
         self.waiting = False
         self.explode = False
@@ -39,7 +45,8 @@ class bomb(PowerUp):
                 self.explosionList.append(exploding_bit(self.explosionPos, index))
 
 class exploding_bit():
-    """Code derived from https://www.youtube.com/watch?v=ukKDZkebRow"""
+    """the decal and debris that occurs with an explosion
+    Code derived from https://www.youtube.com/watch?v=ukKDZkebRow"""
     def __init__(self, pos, magnitude):
         self.x = pos[0] + randint(-1*magnitude, magnitude)
         self.y = pos[1] + randint(-1*magnitude, magnitude)
