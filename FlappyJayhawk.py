@@ -30,10 +30,15 @@ from Jayhawk import *
 from Pipe import *
 from Background import *
 from database import *
+
+#import powerups
+from PowerUpManager import *
+from PipeManager import *
   
 
 #Initialization
 pygame.init()
+settings.init()
 database().__init__()
 
 #Initialization of sound tools
@@ -426,6 +431,7 @@ def gameLoop():
         class_ = getattr(module, powerupElement)
         poweruptest = class_()
         powerupObtainedList.append(poweruptest)"""
+    powerupManager = PowerUpManager()
 
     #Load game sounds
     try:
@@ -451,13 +457,13 @@ def gameLoop():
                     jayhawk.jump()
                     jump.play();
                 if event.key == pygame.K_1:
-                    if(settings.gravity_accel != 1):
+                    if(Jayhawk.gravity_accel != 1):
                         #print(Jayhawk.gravity_accel);
                         difficulty_change(1)
                         back = Background(images['background'], images['background'].get_size(), height);
                         fill = (255, 231, 181);
                 if event.key == pygame.K_2:
-                    if(settings.gravity_accel != 2):
+                    if(Jayhawk.gravity_accel != 2):
                         #difficulty = 2;
                         #print(Jayhawk.gravity_accel);
                         difficulty_change(2)
@@ -465,7 +471,7 @@ def gameLoop():
                         back = Background(images['background2'], images['background2'].get_size(), height);
                         fill = (17, 131, 255);
                 if event.key == pygame.K_3:
-                    if(settings.gravity_accel != 3):
+                    if(Jayhawk.gravity_accel != 3):
                         #difficulty = 3;
                         #print(Jayhawk.gravity_accel);
                         difficulty_change(3)
