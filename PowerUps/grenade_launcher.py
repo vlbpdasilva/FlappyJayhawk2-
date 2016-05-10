@@ -15,7 +15,7 @@ class grenade_launcher(PowerUp):
     GRENADE_LAUNCHED = False
     def __init__(self):
         super(grenade_launcher, self).__init__((0,0,0), (0,0), 20, 0,
-                                               pygame.image.load(os.path.join('.', 'images', 'jayhawk.png')),
+                                               pygame.image.load(os.path.join('.', 'images', 'grenade_launcher.png')),
                                                'grenade_launcher')
 
     def effect(self):
