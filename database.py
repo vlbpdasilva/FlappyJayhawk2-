@@ -29,7 +29,7 @@ class database:
             self.mycursor.execute(add_score, score_data)
             self.printTable(score)
 
-    def printTable(self, score):
+    def printTable(self):
         """print all the scores in the high scores table
         """
         if(self.working):
