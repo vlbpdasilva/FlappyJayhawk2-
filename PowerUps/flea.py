@@ -7,7 +7,7 @@ class flea(PowerUp):
     """
     def __init__(self):
         super(flea, self).__init__((255,255,0), (0,0), 20, 0,
-                                               pygame.image.load(os.path.join('.', 'images', 'jayhawk.png')),
+                                               pygame.image.load(os.path.join('.', 'images', 'flea.png')),
                                                'flea')
         
         self.sizeScale = settings.jayhawk.image.get_width()
