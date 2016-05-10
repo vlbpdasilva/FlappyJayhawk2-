@@ -39,6 +39,8 @@ class Jayhawk(pygame.sprite.Sprite):
     """
     up_counter = 0
     down_counter = 0
+    X = 80
+    Y = 200
     
     def __init__(self, x, y, scale, image):
         """Initialise a new Jayhawk instance.
@@ -51,6 +53,8 @@ class Jayhawk(pygame.sprite.Sprite):
         super(Jayhawk, self).__init__()
         self.x = x
         self.y = y
+        Jayhawk.X = self.x
+        Jayhawk.Y = self.y
         self.Jayhawk_image = image
         self.Jayhawk_image = self.Jayhawk_image.convert_alpha()
         self.Jayhawk_image = pygame.transform.scale(self.Jayhawk_image, scale)
@@ -108,6 +112,7 @@ class Jayhawk(pygame.sprite.Sprite):
 
         self.gravity()
         self.y = self.y + Jayhawk.reg_speed
+        Jayhawk.Y = self.y
         #update rotation
         self.Jayhawk_image = self.original
         self.Jayhawk_image = self.rot_center(self.Jayhawk_image, -1 * Jayhawk.reg_speed)
@@ -150,6 +155,12 @@ class Jayhawk(pygame.sprite.Sprite):
             self.y = 0
         elif(self.y > 440):
             self.y = 440
+
+    def set_image(self, image, scale):
+        self.Jayhawk_image = image
+        self.Jayhawk_image = self.Jayhawk_image.convert_alpha()
+        self.Jayhawk_image = pygame.transform.scale(self.Jayhawk_image, scale)
+        self.original = self.Jayhawk_image
     
     @property
     def image(self):

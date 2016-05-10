@@ -32,11 +32,12 @@ class Pipe(pygame.sprite.Sprite):
         super(Pipe, self).__init__()
         self.x = game_window_width
         self.reset_x = game_window_width
-        self.y = randint(25, 475 - Pipe.GAP)#475 should be game_window_height and game_window_size should be passed as param
+        self.y_top = randint(25, 475 - Pipe.GAP)#475 should be game_window_height and game_window_size should be passed as param
+        self.y_bot = self.y_top
 
         self.Pipe_image_top = image
         self.Pipe_image_top = self.Pipe_image_top.convert_alpha()
-        self.Pipe_image_top = pygame.transform.rotate(self.Pipe_image_top, 180)
+        self.Pipe_image_top = pygame.transform.flip(self.Pipe_image_top, False, True)
         self.Pipe_mask_top = pygame.mask.from_surface(self.Pipe_image_top)
         
         self.Pipe_image_bot = image
@@ -79,7 +80,7 @@ class Pipe(pygame.sprite.Sprite):
     def rect_top(self):
         """Get the top pipe's position, width, and height, as a pygame.Rect.
         """
-        return pygame.Rect(self.x, self.y - 504, 25, 25)#pipe's img height is 504
+        return pygame.Rect(self.x, self.y_top - 504, 25, 25)#pipe's img height is 504
 
     @property
     def image_bot(self):
@@ -98,5 +99,5 @@ class Pipe(pygame.sprite.Sprite):
     def rect_bot(self):
         """Get the bot pipe's position, width, and height, as a pygame.Rect.
         """
-        return pygame.Rect(self.x, self.y + Pipe.GAP, 25, 25)
+        return pygame.Rect(self.x, self.y_bot + Pipe.GAP, 25, 25)
 

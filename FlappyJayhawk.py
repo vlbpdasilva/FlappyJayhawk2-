@@ -23,10 +23,9 @@ Python documentation regarding classes: https://docs.python.org/2/tutorial/class
 """
 
 #Import
-import sys, pygame, time, os, datetime
-#import flappymenu as dm
+import sys, pygame, time, os
+import settings
 from random import randint
-
 from Jayhawk import *
 from Pipe import *
 from Background import *
@@ -44,7 +43,7 @@ pygame.mixer.pre_init(44100, -16, 2, 2048)
 
 #Screen Initializations
 pygame.display.set_caption("Flappy Jayhawk")
-size = width, height = (600, 500)
+size = width, height = (600,500)
 screen = pygame.display.set_mode(size)
 
 #Color Definitions
@@ -274,7 +273,6 @@ def start_menu():
             pygame.quit()
 
         pygame.display.update()
-
         clock.tick(FPS)
         
 def game_over():
@@ -316,8 +314,9 @@ def message_to_screen(msg, color, y_displace=0, size="small"):
     textRect.center = ((width/2),(height/2)+y_displace)
     screen.blit(textSurf,textRect)
 
+"""
 def pipe_collisions_top(bird,pipes):
-    """Takes in top pipes and the bird and returns true if there is a collision"""
+    Takes in top pipes and the bird and returns true if there is a collision
     #---------Notes:--------
     #Screen is (600, 500)
     #Upper right is (600,0)
@@ -326,33 +325,32 @@ def pipe_collisions_top(bird,pipes):
     
     if bird.y < (504 + pipes.y) and (bird.x+50 > pipes.x and bird.x-30 < pipes.x):
         return True
-    if bird.bottom  > 462:
-        return True
     return bird.colliderect(pipes)
 	
     
 def pipe_collisions_bot(bird,pipes):
-    """Takes in bottom pipes and the bird and returns true if there is a collision"""
+    Takes in bottom pipes and the bird and returns true if there is a collision
     if bird.y + 60 > pipes.y and (bird.x+50 > pipes.x and bird.x-30 < pipes.x):
-        return True
-    if bird.bottom  > 462:
         return True
     return bird.colliderect(pipes)
     
 def pipe_passed(bird,pipes):
-    """Pass pipe and increment score"""
+    Pass pipe and increment score
     if bird.y > pipes.y and (bird.x+30 == pipes.x):
-        return True   
+        return True   """
 
 def difficulty_change(difficulty):
     if(difficulty == 1):
         Jayhawk.gravity_accel = 1
+        settings.gravity_accel = 1
         Pipe.GAP = 200
     elif(difficulty == 2):
         Jayhawk.gravity_accel = 2
+        settings.gravity_accel = 2
         Pipe.GAP = 150
     elif(difficulty == 3):
         Jayhawk.gravity_accel = 3
+        settings.gravity_accel = 3
         Pipe.GAP = 125
 
 """def objReftest(c):
@@ -376,18 +374,21 @@ def gameLoop():
     #Scrolling background declaration
     back = Background(images['background'], images['background'].get_size(), height)
 
-    #Array declaration for moving pipes
+    """#Array declaration for moving pipes
     pipe = Pipe(images['pipe'], width)
     pipeList = []
     pipeList.append(pipe)
     #add pipes every 2 seconds
     delayBeforeNextPipe = 286 #(1000 / pygame.time.delay(n)) * 2
-    delayBeforeNextPipeIncr = 0;
-    
+    delayBeforeNextPipeIncr = 0;"""
+    #pipeManager = PipeManager(images['pipe'])
+    settings.pipeManager = PipeManager(images['pipe'])
+    pipeManager = settings.pipeManager
     #Definition of the jayhawk object and its corresponding rect
-    jayhawk = Jayhawk(80,200,(60,60),images['jayhawk'])
-    
-    #Random pipe declaration for testing
+    settings.jayhawk = Jayhawk(80,200,(60,60),images['jayhawk'])
+    jayhawk = settings.jayhawk
+
+    """#Random pipe declaration for testing
     pip = images['pipe']
     pip = pygame.transform.scale(pip, (50, 100))
     piprect = pip.get_rect()
@@ -397,7 +398,7 @@ def gameLoop():
     #piplol = objRef(Pipe(images['pipe'], width))
     #piplol.call('test',[42, 'bar'])
     #pipRef = objRef(pipe)#pipe declared above
-    #objReftest(pipRef)
+    #objReftest(pipRef)"""
 
     #Rect declaration of screen
     screenrect = screen.get_rect()
@@ -410,6 +411,21 @@ def gameLoop():
 
     #initialize score
     score = 0
+    #global FPS
+    
+    """#poweruptest = PowerUp(blue, (50,50), 20, 0, images['jayhawk'], 'test')
+    #powerup array
+    powerupList = []
+    #powerupList.append(poweruptest)
+    #powerups that have been picked up
+    powerupObtainedList = []
+    #poweruptest = grenade_launcher.grenade_launcher()
+    PowerUpsLoadedList = PowerUp.POWERUPS_LOADED_CLEAN.split(' ')
+    for powerupElement in PowerUpsLoadedList:
+        module = __import__('PowerUps.' + powerupElement, fromlist=['uselessplaceholder'])
+        class_ = getattr(module, powerupElement)
+        poweruptest = class_()
+        powerupObtainedList.append(poweruptest)"""
 
     #Load game sounds
     try:
@@ -457,7 +473,7 @@ def gameLoop():
                         back = Background(images['background3'], images['background3'].get_size(), height);           
 
         jayhawk.updatePosition()
-                
+        
         #Keeps the Jayhawk in screen for testing
         #jayrect.clamp_ip(screenrect)
         jayhawk.clamp()        
@@ -468,11 +484,36 @@ def gameLoop():
         screen.blit(back.image, back.rect)
         screen.blit(back.image, back.rect2)
         screen.blit(back.image, back.rect3)
+
+        """#-------------------------------------------------
+        #draw powerup
+        for powerupElement in powerupList:
+            pygame.draw.circle(screen, powerupElement.circle_color, powerupElement.circle_pos,
+                               powerupElement.circle_radius, powerupElement.circle_width)
+            screen.blit(powerupElement.image, powerupElement.image_rect)
+            if(powerupElement.scroll() == False):
+                powerupList.pop(0)
+        #generate powerup
+        if(randint(0, 100) == 1):
+            poweruptest1 = grenade_launcher.grenade_launcher()#PowerUp((0,255,0), (50,50), 20, 0, images['jayhawk'], 'test')
+            powerupList.append(poweruptest1)
+        #draw powerup duration bar
+        for powerupObtainedElement in powerupObtainedList:
+            powerupObtainedElement.effect()
+            powerupObtainedElement.update_duration()
+            pygame.draw.rect(screen, powerupObtainedElement.circle_color,
+                             (0,475,powerupObtainedElement.duration_bar_length,5), 0)
+            if(powerupObtainedElement.duration_expired):
+                powerupObtainedList.remove(powerupObtainedElement)
+        #-----------------------------------------------"""
+        powerupManager.draw_powerups()
+        powerupManager.spawn_management()
+        powerupManager.obtained_management()
         
         #Make background scroll
         back.scroll()
     
-        #Generates new pipes by appending them to the end of Pipe array
+        """#Generates new pipes by appending them to the end of Pipe array
         delayBeforeNextPipeIncr = delayBeforeNextPipeIncr + 1
         if(delayBeforeNextPipeIncr > delayBeforeNextPipe):
             pipe1 = Pipe(images['pipe'], width)
@@ -485,9 +526,6 @@ def gameLoop():
             #make pipe scroll
             if(pipeElement.scroll() == False):
                 pipeList.pop(0)
-                
-        #Draw Jayhawk
-        screen.blit(jayhawk.image, jayhawk.rect)
 
         #Implements collisions
         for pipeElement in pipeList:
@@ -504,8 +542,7 @@ def gameLoop():
                 fail.play();
                 database().addScore(score)
 
-
-	#Implements score
+        #Implements score
         for pipeElement in pipeList:
             if (pipe_passed(jayhawk.rect,pipeElement.rect_top)):
                 score = score + 1
@@ -513,7 +550,28 @@ def gameLoop():
 			blue,
 			-200,
 			"large")
-                                 
+         """
+
+        pipeManager.draw_pipes(1)
+        pipeManager.spawn_management()
+        if(pipeManager.score(jayhawk.rect)):
+            score = score + 1
+            
+        message_to_screen(str(score),
+			blue,
+			-200,
+			"large")
+            
+        if(pipeManager.collision(jayhawk.rect)):
+            gameOver = True
+        
+        #Draw Jayhawk
+        screen.blit(jayhawk.image, jayhawk.rect)
+
+        
+
+
+	   
         while gameOver == True:
                        
             screen.fill(fill)
@@ -524,17 +582,18 @@ def gameLoop():
             #Make background scroll		              
             #back.scroll()	
 
-            #Draw final pipe location
+            """#Draw final pipe location
             for pipeElement in pipeList:
                     screen.blit(pipeElement.image_top, pipeElement.rect_top)
-                    screen.blit(pipeElement.image_bot, pipeElement.rect_bot)
+                    screen.blit(pipeElement.image_bot, pipeElement.rect_bot)"""
+            pipeManager.draw_pipes(0)
 		
             #Draw Jayhawk
             jayhawk.updatePosition()
             jayhawk.clamp()
             screen.blit(jayhawk.image, jayhawk.rect)
             
-                        
+            
             #Draw message
             message_to_screen(str(score),
                             blue,
@@ -568,7 +627,7 @@ def gameLoop():
         #Updates screen and implements delay
         pygame.display.update()
         pygame.display.flip()
-        clock.tick(FPS)
+        clock.tick(settings.FPS)
 
 def main():
     """
