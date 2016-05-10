@@ -178,8 +178,6 @@ def option_menu(screen, menu, x_pos = 200, y_pos = 250, font = None,
                         cursorpos = len(menu) - 1; ArrowPressed = True
 
 
-                # This Section is huge and ugly, I know... But I don't
-                # know a better method for this^^
                 if event.key == pygame.K_1:
                     cursorpos = 0; ArrowPressed = True; exitMenu = True
                 elif event.key == pygame.K_2 and len(menu) >= 2:
@@ -523,31 +521,6 @@ def message_to_screen(msg, color, y_displace=0, size="small"):
     textRect.center = ((width/2),(height/2)+y_displace)
     screen.blit(textSurf,textRect)
 
-"""
-def pipe_collisions_top(bird,pipes):
-    Takes in top pipes and the bird and returns true if there is a collision
-    #---------Notes:--------
-    #Screen is (600, 500)
-    #Upper right is (600,0)
-    #Lower left is (0,500)
-    #Lower right is (600 ,500)
-    
-    if bird.y < (504 + pipes.y) and (bird.x+50 > pipes.x and bird.x-30 < pipes.x):
-        return True
-    return bird.colliderect(pipes)
-	
-    
-def pipe_collisions_bot(bird,pipes):
-    Takes in bottom pipes and the bird and returns true if there is a collision
-    if bird.y + 60 > pipes.y and (bird.x+50 > pipes.x and bird.x-30 < pipes.x):
-        return True
-    return bird.colliderect(pipes)
-    
-def pipe_passed(bird,pipes):
-    Pass pipe and increment score
-    if bird.y > pipes.y and (bird.x+30 == pipes.x):
-        return True   """
-
 def difficulty_change(difficulty):
     if(difficulty == 1):
         Jayhawk.gravity_accel = 1
@@ -562,9 +535,6 @@ def difficulty_change(difficulty):
         settings.gravity_accel = 3
         Pipe.GAP = 125
 
-"""def objReftest(c):
-    demo for objRef and calling methods  
-    c.call('test', [0, 'bar'])"""
         
 def gameLoop():
     """
@@ -583,31 +553,13 @@ def gameLoop():
     #Scrolling background declaration
     back = Background(images['background'], images['background'].get_size(), height)
 
-    """#Array declaration for moving pipes
-    pipe = Pipe(images['pipe'], width)
-    pipeList = []
-    pipeList.append(pipe)
-    #add pipes every 2 seconds
-    delayBeforeNextPipe = 286 #(1000 / pygame.time.delay(n)) * 2
-    delayBeforeNextPipeIncr = 0;"""
-    #pipeManager = PipeManager(images['pipe'])
+    #Array declaration for moving pipes
+
     settings.pipeManager = PipeManager(images['pipe'])
     pipeManager = settings.pipeManager
     #Definition of the jayhawk object and its corresponding rect
     settings.jayhawk = Jayhawk(80,200,(60,60),images['jayhawk'])
     jayhawk = settings.jayhawk
-
-    """#Random pipe declaration for testing
-    pip = images['pipe']
-    pip = pygame.transform.scale(pip, (50, 100))
-    piprect = pip.get_rect()
-    piprect = piprect.move(5,0)
-
-    #demo for objRef and calling methods    
-    #piplol = objRef(Pipe(images['pipe'], width))
-    #piplol.call('test',[42, 'bar'])
-    #pipRef = objRef(pipe)#pipe declared above
-    #objReftest(pipRef)"""
 
     #Rect declaration of screen
     screenrect = screen.get_rect()
@@ -621,20 +573,7 @@ def gameLoop():
     #initialize score
     score = 0
     #global FPS
-    
-    """#poweruptest = PowerUp(blue, (50,50), 20, 0, images['jayhawk'], 'test')
-    #powerup array
-    powerupList = []
-    #powerupList.append(poweruptest)
-    #powerups that have been picked up
-    powerupObtainedList = []
-    #poweruptest = grenade_launcher.grenade_launcher()
-    PowerUpsLoadedList = PowerUp.POWERUPS_LOADED_CLEAN.split(' ')
-    for powerupElement in PowerUpsLoadedList:
-        module = __import__('PowerUps.' + powerupElement, fromlist=['uselessplaceholder'])
-        class_ = getattr(module, powerupElement)
-        poweruptest = class_()
-        powerupObtainedList.append(poweruptest)"""
+
     powerupManager = PowerUpManager()
 
     #Load game sounds
@@ -661,7 +600,7 @@ def gameLoop():
                     jayhawk.jump()
                     if(settings.sound_toggle):
                         jump.play();
-                if event.key == pygame.K_1 or event.key == pygame.K_KP1:
+                if event.key == pygame.K_1 or event.key == pygame.K_KP1: # listens for both "1" keys on keyboard
                     if(Jayhawk.gravity_accel != 1):
                         difficulty_change(1)
                         back = Background(images['background'], images['background'].get_size(), height);
@@ -674,8 +613,6 @@ def gameLoop():
                         fill = (17, 131, 255);
                 if event.key == pygame.K_3 or event.key == pygame.K_KP3:
                     if(Jayhawk.gravity_accel != 3):
-                        #difficulty = 3;
-                        #print(Jayhawk.gravity_accel);
                         difficulty_change(3)
                         ### background image from https://kanimate.files.wordpress.com/2015/05/3.jpg
                         back = Background(images['background3'], images['background3'].get_size(), height);           
@@ -683,7 +620,6 @@ def gameLoop():
         jayhawk.updatePosition()
         
         #Keeps the Jayhawk in screen for testing
-        #jayrect.clamp_ip(screenrect)
         jayhawk.clamp()        
 
         screen.fill(fill)
@@ -693,27 +629,6 @@ def gameLoop():
         screen.blit(back.image, back.rect2)
         screen.blit(back.image, back.rect3)
 
-        """#-------------------------------------------------
-        #draw powerup
-        for powerupElement in powerupList:
-            pygame.draw.circle(screen, powerupElement.circle_color, powerupElement.circle_pos,
-                               powerupElement.circle_radius, powerupElement.circle_width)
-            screen.blit(powerupElement.image, powerupElement.image_rect)
-            if(powerupElement.scroll() == False):
-                powerupList.pop(0)
-        #generate powerup
-        if(randint(0, 100) == 1):
-            poweruptest1 = grenade_launcher.grenade_launcher()#PowerUp((0,255,0), (50,50), 20, 0, images['jayhawk'], 'test')
-            powerupList.append(poweruptest1)
-        #draw powerup duration bar
-        for powerupObtainedElement in powerupObtainedList:
-            powerupObtainedElement.effect()
-            powerupObtainedElement.update_duration()
-            pygame.draw.rect(screen, powerupObtainedElement.circle_color,
-                             (0,475,powerupObtainedElement.duration_bar_length,5), 0)
-            if(powerupObtainedElement.duration_expired):
-                powerupObtainedList.remove(powerupObtainedElement)
-        #-----------------------------------------------"""
         if(settings.powerup_toggle):
             powerupManager.draw_powerups()
             powerupManager.spawn_management()
@@ -722,45 +637,6 @@ def gameLoop():
         #Make background scroll
         back.scroll()
     
-        """#Generates new pipes by appending them to the end of Pipe array
-        delayBeforeNextPipeIncr = delayBeforeNextPipeIncr + 1
-        if(delayBeforeNextPipeIncr > delayBeforeNextPipe):
-            pipe1 = Pipe(images['pipe'], width)
-            pipeList.append(pipe1)
-            delayBeforeNextPipeIncr = 0
-        #Draw pipe
-        for pipeElement in pipeList:
-            screen.blit(pipeElement.image_top, pipeElement.rect_top)
-            screen.blit(pipeElement.image_bot, pipeElement.rect_bot)
-            #make pipe scroll
-            if(pipeElement.scroll() == False):
-                pipeList.pop(0)
-
-        #Implements collisions
-        for pipeElement in pipeList:
-            botPipeRect = pipeElement.rect_bot
-            topPipeRect = pipeElement.rect_top
-            #if (pipe_collisions_top(jayrect,topPipeRect)):
-            if (pipe_collisions_top(jayhawk.rect,topPipeRect)):
-                gameOver = True
-                fail.play();
-                database().addScore(score)
-            #if (pipe_collisions_bot(jayrect,botPipeRect)):
-            if (pipe_collisions_bot(jayhawk.rect,botPipeRect)):   
-                gameOver = True
-                fail.play();
-                database().addScore(score)
-
-        #Implements score
-        for pipeElement in pipeList:
-            if (pipe_passed(jayhawk.rect,pipeElement.rect_top)):
-                score = score + 1
-        message_to_screen(str(score),
-			blue,
-			-200,
-			"large")
-         """
-
         pipeManager.draw_pipes(1)
         pipeManager.spawn_management()
         if(pipeManager.score(jayhawk.rect)):
@@ -782,7 +658,6 @@ def gameLoop():
             gameOver = True
             fail.play()
 
-
 	scoreAdded = False   
         while gameOver == True:
                        
@@ -794,10 +669,6 @@ def gameLoop():
             #Make background scroll		              
             #back.scroll()	
 
-            """#Draw final pipe location
-            for pipeElement in pipeList:
-                    screen.blit(pipeElement.image_top, pipeElement.rect_top)
-                    screen.blit(pipeElement.image_bot, pipeElement.rect_bot)"""
             pipeManager.draw_pipes(0)
 		
             #Draw Jayhawk
