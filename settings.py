@@ -1,4 +1,7 @@
-# settings.py
+#   settings.py
+
+""" Initialization of global variables. 
+    No logical operations performed. """ 
 
 def init():
     #window properties
