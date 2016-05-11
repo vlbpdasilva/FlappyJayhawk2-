@@ -455,10 +455,14 @@ def high_score():
                         -100,
                         "large")
 
-    message_to_screen(database().printTable(),
-                        blue,
-                        -50,
-                        "medium")
+    rows = database().printTable()
+    for index,row in enumerate(rows):    
+        message_to_screen(str(row[0]),
+                            blue,
+                            -50 + index * 20,
+                            "medium")
+        if(index > 7):
+            break
 
     pygame.display.update()
     clock.tick(FPS)

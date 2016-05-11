@@ -27,7 +27,7 @@ class database:
             add_score = ("INSERT INTO scores_alltime (score, name, timestamp) VALUES (%s, %s, %s)")
             score_data = (score, 'test', datetime.datetime.now())
             self.mycursor.execute(add_score, score_data)
-            self.printTable()
+        #    self.printTable()
 
     def printTable(self):
         """print all the scores in the high scores table
@@ -37,7 +37,7 @@ class database:
                 "FROM scores_alltime "
                 "ORDER BY score DESC "
                 "LIMIT 0 , 30")
-            print(self.mycursor.fetchall())
+            #print(self.mycursor.fetchall())
             return self.mycursor.fetchall()
         return "COULD NOT CONNECT TO DATABASE"
         """to be implemented...
