@@ -1,6 +1,5 @@
 ﻿BUG LIST
 
-
 1. When trying to exit using ‘x’ will just reload the screen, will eventually exit on enough clicks but will not do it right away
 2. Gameover with a power up may cause you to start next game with the power ups effect for a second
 3. Show High-Score will crash the game
