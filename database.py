@@ -11,7 +11,7 @@ class database:
         try:
             import mysql.connector
             self.conn=mysql.connector.connect(user='jyang',password='gumy555',host='mysql.eecs.ku.edu',database='jyang')
-            self.mycursor=self.conn.cursor()
+            self.mycursor=self.conn.cursor(buffered=True)
             self.mycursor.execute("SHOW TABLES")            
             print(self.mycursor.fetchall())
             self.working = True
