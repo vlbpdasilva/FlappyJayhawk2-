@@ -9,7 +9,7 @@
 <td valign=bottom>&nbsp;<br>
 <font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>Jayhawk</strong></big></big></font></td
 ><td align=right valign=bottom
-><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/cvo/FlappyJayhawk/Jayhawk.py">/home/cvo/FlappyJayhawk/Jayhawk.py</a></font></td></tr></table>
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/cvo/FlappyJayhawk2-master/Jayhawk.py">/home/cvo/FlappyJayhawk2-master/Jayhawk.py</a></font></td></tr></table>
     <p></p>
 <p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
@@ -47,22 +47,18 @@ colliding&nbsp;with&nbsp;pipes.&nbsp;Ascending&nbsp;will&nbsp;occur&nbsp;when&nb
 Descending&nbsp;will&nbsp;occur&nbsp;when&nbsp;the&nbsp;player&nbsp;is&nbsp;not&nbsp;causing&nbsp;the&nbsp;<a href="#Jayhawk">Jayhawk</a>&nbsp;to<br>
 ascend.&nbsp;Colliding&nbsp;with&nbsp;pipes&nbsp;will&nbsp;cause&nbsp;the&nbsp;<a href="#Jayhawk">Jayhawk</a>&nbsp;to&nbsp;lose&nbsp;health.<br>
 At&nbsp;0&nbsp;health,&nbsp;the&nbsp;player&nbsp;loses&nbsp;the&nbsp;game.<br>
-Attributes:&nbsp;(NOTE:&nbsp;THIS&nbsp;WILL&nbsp;BE&nbsp;CHANGED.&nbsp;these&nbsp;are&nbsp;not&nbsp;the&nbsp;actual&nbsp;attributes&nbsp;or&nbsp;constants,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;they&nbsp;are&nbsp;only&nbsp;here&nbsp;as&nbsp;an&nbsp;example&nbsp;of&nbsp;documentation&nbsp;for&nbsp;now)<br>
-x:&nbsp;The&nbsp;bird's&nbsp;X&nbsp;coordinate.<br>
-y:&nbsp;The&nbsp;bird's&nbsp;Y&nbsp;coordinate.<br>
-msec_to_climb:&nbsp;The&nbsp;number&nbsp;of&nbsp;milliseconds&nbsp;left&nbsp;to&nbsp;climb,&nbsp;where&nbsp;a<br>
-&nbsp;&nbsp;&nbsp;&nbsp;complete&nbsp;climb&nbsp;lasts&nbsp;Bird.CLIMB_DURATION&nbsp;milliseconds.<br>
-Constants:<br>
-WIDTH:&nbsp;The&nbsp;width,&nbsp;in&nbsp;pixels,&nbsp;of&nbsp;the&nbsp;bird's&nbsp;image.<br>
-HEIGHT:&nbsp;The&nbsp;height,&nbsp;in&nbsp;pixels,&nbsp;of&nbsp;the&nbsp;bird's&nbsp;image.<br>
-SINK_SPEED:&nbsp;With&nbsp;which&nbsp;speed,&nbsp;in&nbsp;pixels&nbsp;per&nbsp;millisecond,&nbsp;the&nbsp;bird<br>
-&nbsp;&nbsp;&nbsp;&nbsp;descends&nbsp;in&nbsp;one&nbsp;second&nbsp;while&nbsp;not&nbsp;climbing.<br>
-CLIMB_SPEED:&nbsp;With&nbsp;which&nbsp;speed,&nbsp;in&nbsp;pixels&nbsp;per&nbsp;millisecond,&nbsp;the&nbsp;bird<br>
-&nbsp;&nbsp;&nbsp;&nbsp;ascends&nbsp;in&nbsp;one&nbsp;second&nbsp;while&nbsp;climbing,&nbsp;on&nbsp;average.&nbsp;&nbsp;See&nbsp;also&nbsp;the<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Bird.update&nbsp;docstring.<br>
-CLIMB_DURATION:&nbsp;The&nbsp;number&nbsp;of&nbsp;milliseconds&nbsp;it&nbsp;takes&nbsp;the&nbsp;bird&nbsp;to<br>
-&nbsp;&nbsp;&nbsp;&nbsp;execute&nbsp;a&nbsp;complete&nbsp;climb.<br>&nbsp;</tt></td></tr>
+&nbsp;<br>
+Attributes&nbsp;that&nbsp;all&nbsp;<a href="#Jayhawk">Jayhawk</a>&nbsp;instances&nbsp;share:&nbsp;<br>
+isGoingUp:(deprecated)&nbsp;flag&nbsp;to&nbsp;detect&nbsp;if&nbsp;<a href="#Jayhawk">Jayhawk</a>&nbsp;is&nbsp;going&nbsp;up,&nbsp;up_counter&nbsp;is&nbsp;changed&nbsp;as&nbsp;a&nbsp;result<br>
+isJumping:&nbsp;flag&nbsp;to&nbsp;detect&nbsp;if&nbsp;jump&nbsp;has&nbsp;been&nbsp;called&nbsp;to&nbsp;reset&nbsp;<a href="#Jayhawk">Jayhawk</a>'s&nbsp;speed&nbsp;back&nbsp;to&nbsp;reg_speed<br>
+up_speed:(deprecated)&nbsp;the&nbsp;speed&nbsp;going&nbsp;up<br>
+down_speed:(deprecated)&nbsp;the&nbsp;speed&nbsp;going&nbsp;down<br>
+reg_speed:&nbsp;<a href="#Jayhawk">Jayhawk</a>'s&nbsp;Jumping&nbsp;speed<br>
+gravity_accel:&nbsp;<a href="#Jayhawk">Jayhawk</a>'s&nbsp;Speed&nbsp;decreases&nbsp;at&nbsp;this&nbsp;rate<br>
+up_counter:(deprecated)&nbsp;up_speed&nbsp;is&nbsp;changed&nbsp;based&nbsp;on&nbsp;up_counter<br>
+down_counter:(deprecated)&nbsp;down_speed&nbsp;is&nbsp;changed&nbsp;based&nbsp;on&nbsp;down_counter<br>
+X:&nbsp;The&nbsp;bird's&nbsp;X&nbsp;coordinate.<br>
+Y:&nbsp;The&nbsp;bird's&nbsp;Y&nbsp;coordinate.<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
 <td width="100%"><dl><dt>Method resolution order:</dt>
 <dd><a href="Jayhawk.html#Jayhawk">Jayhawk</a></dd>
@@ -78,6 +74,26 @@ y:&nbsp;The&nbsp;<a href="#Jayhawk">Jayhawk</a>'s&nbsp;initial&nbsp;Y&nbsp;coord
 scale:&nbsp;The&nbsp;<a href="#Jayhawk">Jayhawk</a>'s&nbsp;size&nbsp;multiplier.<br>
 image:&nbsp;The&nbsp;<a href="#Jayhawk">Jayhawk</a>'s&nbsp;image.</tt></dd></dl>
 
+<dl><dt><a name="Jayhawk-clamp"><strong>clamp</strong></a>(self)</dt><dd><tt>Clamp&nbsp;the&nbsp;<a href="#Jayhawk">Jayhawk</a>&nbsp;to&nbsp;stay&nbsp;within&nbsp;the&nbsp;screen's&nbsp;boundaries.<br>
+This&nbsp;is&nbsp;done&nbsp;rather&nbsp;than&nbsp;calling&nbsp;clamp_ip()&nbsp;because&nbsp;returning&nbsp;the&nbsp;<a href="#Jayhawk">Jayhawk</a>&nbsp;class's&nbsp;rect&nbsp;does&nbsp;not<br>
+seem&nbsp;to&nbsp;qualify&nbsp;as&nbsp;a&nbsp;proper&nbsp;get_rect()&nbsp;that&nbsp;clamp_ip()&nbsp;looks&nbsp;for.</tt></dd></dl>
+
+<dl><dt><a name="Jayhawk-gravity"><strong>gravity</strong></a>(self)</dt><dd><tt>apply&nbsp;rate&nbsp;of&nbsp;gravity&nbsp;to&nbsp;change&nbsp;the&nbsp;<a href="#Jayhawk">Jayhawk</a>'s&nbsp;speed</tt></dd></dl>
+
+<dl><dt><a name="Jayhawk-grounded"><strong>grounded</strong></a>(self)</dt><dd><tt>collision&nbsp;detection&nbsp;for&nbsp;bottom&nbsp;of&nbsp;screen</tt></dd></dl>
+
+<dl><dt><a name="Jayhawk-jump"><strong>jump</strong></a>(self)</dt><dd><tt>The&nbsp;<a href="#Jayhawk">Jayhawk</a>&nbsp;jumps&nbsp;up&nbsp;thus&nbsp;moving&nbsp;up.<br>
+listens&nbsp;for&nbsp;UP&nbsp;ARROW&nbsp;key.<br>
+Triggers&nbsp;isGoingUp&nbsp;to&nbsp;be&nbsp;True,&nbsp;sets&nbsp;up_counter&nbsp;to&nbsp;0&nbsp;to&nbsp;begin&nbsp;initial&nbsp;jump&nbsp;speed&nbsp;(up_speed&nbsp;to&nbsp;-16).</tt></dd></dl>
+
+<dl><dt><a name="Jayhawk-rot_center"><strong>rot_center</strong></a>(self, image, angle)</dt><dd><tt>rotate&nbsp;an&nbsp;image&nbsp;while&nbsp;keeping&nbsp;its&nbsp;center&nbsp;and&nbsp;size<br>
+Source:&nbsp;<a href="http://pygame.org/wiki/RotateCenter?parent">http://pygame.org/wiki/RotateCenter?parent</a>=</tt></dd></dl>
+
+<dl><dt><a name="Jayhawk-set_image"><strong>set_image</strong></a>(self, image, scale)</dt><dd><tt>Change&nbsp;the&nbsp;jayhawk's&nbsp;image&nbsp;and&nbsp;scale</tt></dd></dl>
+
+<dl><dt><a name="Jayhawk-updatePosition"><strong>updatePosition</strong></a>(self)</dt><dd><tt>Update&nbsp;the&nbsp;position&nbsp;of&nbsp;the&nbsp;<a href="#Jayhawk">Jayhawk</a>&nbsp;by&nbsp;calculating&nbsp;all&nbsp;necessary<br>
+position&nbsp;movements&nbsp;affected&nbsp;by&nbsp;gravity&nbsp;function&nbsp;and&nbsp;player-inputted&nbsp;jumps.</tt></dd></dl>
+
 <hr>
 Data descriptors defined here:<br>
 <dl><dt><strong>image</strong></dt>
@@ -89,9 +105,30 @@ The&nbsp;bitmask&nbsp;excludes&nbsp;all&nbsp;pixels&nbsp;in&nbsp;self.<strong>im
 transparency&nbsp;greater&nbsp;than&nbsp;127.</tt></dd>
 </dl>
 <dl><dt><strong>rect</strong></dt>
-<dd><tt>Get&nbsp;the&nbsp;bird's&nbsp;position,&nbsp;width,&nbsp;and&nbsp;height,&nbsp;as&nbsp;a&nbsp;pygame.Rect.<br>
-THE&nbsp;WIDTH&nbsp;AND&nbsp;HEIGHT&nbsp;PARAMETERS&nbsp;DON'T&nbsp;WORK?</tt></dd>
+<dd><tt>Get&nbsp;the&nbsp;bird's&nbsp;position,&nbsp;width,&nbsp;and&nbsp;height,&nbsp;as&nbsp;a&nbsp;pygame.Rect.</tt></dd>
 </dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>X</strong> = 80</dl>
+
+<dl><dt><strong>Y</strong> = 200</dl>
+
+<dl><dt><strong>down_counter</strong> = 0</dl>
+
+<dl><dt><strong>down_speed</strong> = 2</dl>
+
+<dl><dt><strong>gravity_accel</strong> = 1</dl>
+
+<dl><dt><strong>isGoingUp</strong> = False</dl>
+
+<dl><dt><strong>isJumping</strong> = False</dl>
+
+<dl><dt><strong>reg_speed</strong> = 6</dl>
+
+<dl><dt><strong>up_counter</strong> = 0</dl>
+
+<dl><dt><strong>up_speed</strong> = -22</dl>
+
 <hr>
 Methods inherited from <a href="pygame.sprite.html#Sprite">pygame.sprite.Sprite</a>:<br>
 <dl><dt><a name="Jayhawk-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>

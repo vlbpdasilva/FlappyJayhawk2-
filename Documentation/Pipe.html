@@ -9,7 +9,7 @@
 <td valign=bottom>&nbsp;<br>
 <font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>Pipe</strong></big></big></font></td
 ><td align=right valign=bottom
-><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/cvo/FlappyJayhawk/Pipe.py">/home/cvo/FlappyJayhawk/Pipe.py</a></font></td></tr></table>
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/cvo/FlappyJayhawk2-master/Pipe.py">/home/cvo/FlappyJayhawk2-master/Pipe.py</a></font></td></tr></table>
     <p></p>
 <p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
@@ -41,20 +41,13 @@
 <font color="#000000" face="helvetica, arial"><a name="Pipe">class <strong>Pipe</strong></a>(<a href="pygame.sprite.html#Sprite">pygame.sprite.Sprite</a>)</font></td></tr>
     
 <tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
-<td colspan=2><tt>x:&nbsp;The&nbsp;bird's&nbsp;X&nbsp;coordinate.<br>
-y:&nbsp;The&nbsp;bird's&nbsp;Y&nbsp;coordinate.<br>
-msec_to_climb:&nbsp;The&nbsp;number&nbsp;of&nbsp;milliseconds&nbsp;left&nbsp;to&nbsp;climb,&nbsp;where&nbsp;a<br>
-&nbsp;&nbsp;&nbsp;&nbsp;complete&nbsp;climb&nbsp;lasts&nbsp;Bird.CLIMB_DURATION&nbsp;milliseconds.<br>
-Constants:<br>
-WIDTH:&nbsp;The&nbsp;width,&nbsp;in&nbsp;pixels,&nbsp;of&nbsp;the&nbsp;bird's&nbsp;image.<br>
-HEIGHT:&nbsp;The&nbsp;height,&nbsp;in&nbsp;pixels,&nbsp;of&nbsp;the&nbsp;bird's&nbsp;image.<br>
-SINK_SPEED:&nbsp;With&nbsp;which&nbsp;speed,&nbsp;in&nbsp;pixels&nbsp;per&nbsp;millisecond,&nbsp;the&nbsp;bird<br>
-&nbsp;&nbsp;&nbsp;&nbsp;descends&nbsp;in&nbsp;one&nbsp;second&nbsp;while&nbsp;not&nbsp;climbing.<br>
-CLIMB_SPEED:&nbsp;With&nbsp;which&nbsp;speed,&nbsp;in&nbsp;pixels&nbsp;per&nbsp;millisecond,&nbsp;the&nbsp;bird<br>
-&nbsp;&nbsp;&nbsp;&nbsp;ascends&nbsp;in&nbsp;one&nbsp;second&nbsp;while&nbsp;climbing,&nbsp;on&nbsp;average.&nbsp;&nbsp;See&nbsp;also&nbsp;the<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Bird.update&nbsp;docstring.<br>
-CLIMB_DURATION:&nbsp;The&nbsp;number&nbsp;of&nbsp;milliseconds&nbsp;it&nbsp;takes&nbsp;the&nbsp;bird&nbsp;to<br>
-&nbsp;&nbsp;&nbsp;&nbsp;execute&nbsp;a&nbsp;complete&nbsp;climb.<br>&nbsp;</tt></td></tr>
+<td colspan=2><tt>The&nbsp;main&nbsp;obstacle&nbsp;in&nbsp;the&nbsp;game.&nbsp;<a href="#Pipe">Pipe</a>&nbsp;will&nbsp;represent&nbsp;a&nbsp;pair&nbsp;of&nbsp;pipes&nbsp;that&nbsp;appear&nbsp;together&nbsp;in&nbsp;tandem&nbsp;top&nbsp;and&nbsp;bottom&nbsp;positions.<br>
+<a href="#Pipe">Pipe</a>'s&nbsp;exact&nbsp;position&nbsp;is&nbsp;random.&nbsp;Spawning&nbsp;of&nbsp;<a href="#Pipe">Pipe</a>&nbsp;will&nbsp;occur&nbsp;at&nbsp;a&nbsp;set&nbsp;interval.&nbsp;<a href="#Pipe">Pipe</a>&nbsp;will&nbsp;scroll&nbsp;toward&nbsp;the&nbsp;Jayhawk.<br>
+Upon&nbsp;collision&nbsp;with&nbsp;<a href="#Pipe">Pipe</a>,&nbsp;Jayhawk&nbsp;takes&nbsp;massive&nbsp;damage&nbsp;falling&nbsp;and&nbsp;becoming&nbsp;unable&nbsp;to&nbsp;get&nbsp;up&nbsp;thus&nbsp;ending&nbsp;the&nbsp;game.<br>
+Passing&nbsp;<a href="#Pipe">Pipe</a>&nbsp;increments&nbsp;score&nbsp;counter.<br>
+&nbsp;<br>
+Attributes&nbsp;that&nbsp;all&nbsp;<a href="#Pipe">Pipe</a>&nbsp;instances&nbsp;share:<br>
+GAP:&nbsp;the&nbsp;gap&nbsp;between&nbsp;top&nbsp;and&nbsp;bottom&nbsp;pipes&nbsp;in&nbsp;the&nbsp;pipe&nbsp;pair<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
 <td width="100%"><dl><dt>Method resolution order:</dt>
 <dd><a href="Pipe.html#Pipe">Pipe</a></dd>
@@ -97,6 +90,10 @@ transparency&nbsp;greater&nbsp;than&nbsp;127.</tt></dd>
 <dl><dt><strong>rect_top</strong></dt>
 <dd><tt>Get&nbsp;the&nbsp;top&nbsp;pipe's&nbsp;position,&nbsp;width,&nbsp;and&nbsp;height,&nbsp;as&nbsp;a&nbsp;pygame.Rect.</tt></dd>
 </dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>GAP</strong> = 200</dl>
+
 <hr>
 Methods inherited from <a href="pygame.sprite.html#Sprite">pygame.sprite.Sprite</a>:<br>
 <dl><dt><a name="Pipe-__repr__"><strong>__repr__</strong></a>(self)</dt></dl>
