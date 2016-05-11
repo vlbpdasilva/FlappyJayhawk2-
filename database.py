@@ -27,7 +27,7 @@ class database:
             add_score = ("INSERT INTO scores_alltime (score, name, timestamp) VALUES (%s, %s, %s)")
             score_data = (score, 'test', datetime.datetime.now())
             self.mycursor.execute(add_score, score_data)
-            self.printTable(score)
+            self.printTable()
 
     def printTable(self):
         """print all the scores in the high scores table
