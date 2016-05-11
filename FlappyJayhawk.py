@@ -66,20 +66,6 @@ smallFont = pygame.font.SysFont("comicsansms", 14)
 medFont = pygame.font.SysFont("comicsansms", 25)
 largeFont = pygame.font.SysFont("comicsansms", 50)
 
-class objRef():
-    """Simulating pointers in python can be done explicitly.
-    Source: http://stackoverflow.com/a/1145848
-    Calling a function of a module from a string with the function's name in Python can be compressed to: result = getattr(foo, 'bar')()
-    Source: http://stackoverflow.com/a/3071
-    Python using getattr to call function with variable parameters You could try something like: getattr(foo, bar)(*params)
-    Source: http://stackoverflow.com/a/11781292
-
-    Note: cannot be used to get instance values of an object"""
-    def __init__(self, obj): self.obj = obj
-    def get(self):    return self.obj
-    def set(self, obj):      self.obj = obj
-    def call(self, methodToCall, params):   return getattr(self.obj, methodToCall)(*params)
-
 def load_images():
     """Load all images required by the game and return a dict of them.
     The returned dict has the following keys:
@@ -178,6 +164,8 @@ def option_menu(screen, menu, x_pos = 200, y_pos = 250, font = None,
                         cursorpos = len(menu) - 1; ArrowPressed = True
 
 
+                # This Section is huge and ugly, I know... But I don't
+                # know a better method for this^^
                 if event.key == pygame.K_1:
                     cursorpos = 0; ArrowPressed = True; exitMenu = True
                 elif event.key == pygame.K_2 and len(menu) >= 2:
@@ -276,9 +264,9 @@ def start_menu():
             instruction()
             intro = False
         elif choose == 3:
-            high_score()
             print "You choose 'Show Highscore'."
-            intro = False
+            high_score()
+            intro == False
         elif choose == 4:
             print "You choose 'Quit Game'."
             pygame.quit()
@@ -534,7 +522,6 @@ def difficulty_change(difficulty):
         Jayhawk.gravity_accel = 3
         settings.gravity_accel = 3
         Pipe.GAP = 125
-
         
 def gameLoop():
     """
@@ -553,8 +540,7 @@ def gameLoop():
     #Scrolling background declaration
     back = Background(images['background'], images['background'].get_size(), height)
 
-    #Array declaration for moving pipes
-
+    #pipeManager = PipeManager(images['pipe'])
     settings.pipeManager = PipeManager(images['pipe'])
     pipeManager = settings.pipeManager
     #Definition of the jayhawk object and its corresponding rect
@@ -573,7 +559,7 @@ def gameLoop():
     #initialize score
     score = 0
     #global FPS
-
+    
     powerupManager = PowerUpManager()
 
     #Load game sounds
@@ -600,7 +586,7 @@ def gameLoop():
                     jayhawk.jump()
                     if(settings.sound_toggle):
                         jump.play();
-                if event.key == pygame.K_1 or event.key == pygame.K_KP1: # listens for both "1" keys on keyboard
+                if event.key == pygame.K_1 or event.key == pygame.K_KP1:# listens for both "1" keys on keyboard
                     if(Jayhawk.gravity_accel != 1):
                         difficulty_change(1)
                         back = Background(images['background'], images['background'].get_size(), height);
@@ -628,7 +614,7 @@ def gameLoop():
         screen.blit(back.image, back.rect)
         screen.blit(back.image, back.rect2)
         screen.blit(back.image, back.rect3)
-
+ 
         if(settings.powerup_toggle):
             powerupManager.draw_powerups()
             powerupManager.spawn_management()
@@ -636,7 +622,7 @@ def gameLoop():
         
         #Make background scroll
         back.scroll()
-    
+
         pipeManager.draw_pipes(1)
         pipeManager.spawn_management()
         if(pipeManager.score(jayhawk.rect)):
@@ -649,26 +635,28 @@ def gameLoop():
             
         if(pipeManager.collision(jayhawk.rect)):
             gameOver = True
-            fail.play()
+            if(settings.sound_toggle):
+                fail.play()
         
         #Draw Jayhawk
         screen.blit(jayhawk.image, jayhawk.rect)
 
         if(jayhawk.grounded()):
             gameOver = True
-            fail.play()
+            if(settings.sound_toggle):
+                fail.play()
 
-	scoreAdded = False   
+
+	   
         while gameOver == True:
                        
             screen.fill(fill)
             #Draw background	
             screen.blit(back.image, back.rect)
             screen.blit(back.image, back.rect2)
-            screen.blit(back.image, back.rect3)		           
-            #Make background scroll		              
-            #back.scroll()	
+            screen.blit(back.image, back.rect3)		           	
 
+            #Draw final pipe location
             pipeManager.draw_pipes(0)
 		
             #Draw Jayhawk
@@ -682,9 +670,6 @@ def gameLoop():
                             blue,
                             -200,
                             "large")
-            if(not scoreAdded):
-            	database().addScore(score)
-            	scoreAdded = True
             message_to_screen("Game Over",
                             blue,
                             -50,
