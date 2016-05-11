@@ -1,10 +1,9 @@
 """
-EECS 448 - "Flappy Jayhawk" -- Project 3
+EECS 448 - "Flappy Jayhawk" -- Project 4
 @author Victor Berger, Jesse Yang, Jeromy Tsai, and Cammy Vo
 prof: John Gibbons
 University of Kansas
-code freeze: April 8th, 2016 - 11:59 pm
- 
+
 Basic controls:
 From the menu, press the spacebar to start game. Use the up arrow to control the Jayhawk up.
 Hitting one of the moving blocks causes you to lose. Then, the user can press 'c' to restart 
@@ -15,10 +14,13 @@ Sources used:_____________________
 Official Pygame documentation: http://www.pygame.org/docs/
 Youtube videos available at https://www.youtube.com/playlist?list=PL6gx4Cwl9DGAjkwJocj7vlc_mFU-4wXJq
 Pipe image from http://vignette3.wikia.nocookie.net/fantendo/images/0/06/RocketPipes.png/revision/latest?cb=20100430132034
-Background obtained from https://peukalo.wordpress.com/tag/super-mario/
+First background obtained from https://peukalo.wordpress.com/tag/super-mario/
+Second background image from http://freetems.net/files/2143_t2.png
+Third background image from https://kanimate.files.wordpress.com/2015/05/3.jpg
 Github repository used for help with Pygame implementations: https://github.com/TimoWilken/flappy-bird-pygame
 Pygame clock documentation: http://www.geon.wz.cz/pygame/ref/pygame_time.html
 Python documentation regarding classes: https://docs.python.org/2/tutorial/classes.html
+Pygame sound effect documentation: http://thepythongamebook.com/en:pygame:step010
 
 """
 
@@ -163,9 +165,6 @@ def option_menu(screen, menu, x_pos = 200, y_pos = 250, font = None,
                     else:
                         cursorpos = len(menu) - 1; ArrowPressed = True
 
-
-                # This Section is huge and ugly, I know... But I don't
-                # know a better method for this^^
                 if event.key == pygame.K_1:
                     cursorpos = 0; ArrowPressed = True; exitMenu = True
                 elif event.key == pygame.K_2 and len(menu) >= 2:
@@ -534,7 +533,6 @@ def gameLoop():
     images = load_images();
     
     #Initial difficulty setting
-    #difficulty = 1;
     difficulty_change(1)
 
     #Scrolling background declaration
@@ -558,8 +556,7 @@ def gameLoop():
 
     #initialize score
     score = 0
-    #global FPS
-    
+
     powerupManager = PowerUpManager()
 
     #Load game sounds
