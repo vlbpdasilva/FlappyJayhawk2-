@@ -5,5 +5,6 @@
 3. Show High-Score will crash the game
 4. No matter how the game is exited, the Python shell will return errors (no significant effect on operation of program).
 5. Menu’s icon cursor freezes sometimes
-6. Collision handling for flea mode (yellow upgrade) is off
+6. Collision handling for flea mode (yellow upgrade) is off, probably is impossible to continue without losing with it
 7. Bird glitches behind pipe for a split second when it collides with it
+
