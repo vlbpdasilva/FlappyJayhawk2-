@@ -47,9 +47,9 @@ class TestDatabaseDefs(unittest.TestCase):
         """
         currentTest = self.shortDescription()
         if (currentTest == "test_is_addScore_working"):
-            sys.stderr.write("Testing if addScore is allowing database addition ... ")
+            sys.stderr.write("Testing if addScore is allowing sql ... ")
         elif (currentTest == "test_is_printTable_working"):
-            sys.stderr.write("Testing if printTable is printing the table ... ")
+            sys.stderr.write("Testing if printTable is allowing sql ... ")
         else:
             sys.stderr.write("Unnamed test ... ")
             
@@ -644,11 +644,11 @@ class TestBackgroundDefs(unittest.TestCase):
 def main():
     """
     Loads the test and exits the pygame screen.
-	Keeps the dialog box up for 300 seconds
+	Keeps the dialog box up for 500 seconds
     """
     unittest.TextTestRunner(verbosity=2).run(testsuite())
     pygame.quit()
-    sys.exit(time.sleep(300))
+    sys.exit(time.sleep(500))
 	
 """
 Starts application by calling main function
