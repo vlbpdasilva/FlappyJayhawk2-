@@ -62,50 +62,6 @@ class Jayhawk(pygame.sprite.Sprite):
         position movements affected by gravity function and player-inputted jumps.
         """
         
-        """
-        The following IF statement controls the entire movement of the Jayhawk while it's going up.
-        The counter is used to control speed, giving the user a feeling of acceleration.
-        
-        The following ELSE statement controls the entire movement of the Jayhawk while it's going Jayhawk.down.
-        The counter is used to control speed, giving the user a feeling of acceleration.
-        """
-        """if(Jayhawk.isGoingUp):
-            self.y = self.y + Jayhawk.up_speed/2
-            Jayhawk.up_counter += 1
-            Jayhawk.down_counter = 0        
-            if(Jayhawk.up_counter == 1):
-                Jayhawk.up_speed = -16
-            elif(Jayhawk.up_counter == 2):
-                Jayhawk.up_speed = -12
-            elif(Jayhawk.up_counter == 3):
-                Jayhawk.up_speed = -10    
-            elif(Jayhawk.up_counter == 4):
-                Jayhawk.up_speed = -6           
-            elif(Jayhawk.up_counter == 5):
-                Jayhawk.up_speed = -4         
-            elif(Jayhawk.up_counter == 6):
-                Jayhawk.up_speed = -2           
-            elif(Jayhawk.up_counter > 6):
-                Jayhawk.isGoingUp = False
-                Jayhawk.up_counter = 0
-                Jayhawk.up_speed = -22 
-        else:
-            self.y = self.y + Jayhawk.down_speed/8            
-            Jayhawk.down_counter += 1
-            Jayhawk.up_counter = 0            
-            if(Jayhawk.down_counter == 1):
-                Jayhawk.down_speed = 4            
-            elif(Jayhawk.down_counter == 2):
-                Jayhawk.down_speed = 6            
-            elif(Jayhawk.down_counter == 3):
-                Jayhawk.down_speed = 10            
-            elif(Jayhawk.down_counter == 4):
-                Jayhawk.down_speed = 12            
-            elif(Jayhawk.down_counter == 5):
-                Jayhawk.down_speed = 16            
-            elif(Jayhawk.down_counter > 5):
-                Jayhawk.down_speed = 22"""
-
         self.gravity()
         self.y = self.y + Jayhawk.reg_speed
         Jayhawk.Y = self.y
