@@ -2,7 +2,7 @@
 
 1. When trying to exit using ‘x’ will just reload the screen, will eventually exit on enough clicks but will not do it right away
 2. Gameover with a power up may cause you to start next game with the power ups effect for a second
-3. Show High-Score will crash the game
+3. Show High-Score will crash the game when database is loaded
 4. No matter how the game is exited, the Python shell will return errors (no significant effect on operation of program).
 5. Menu’s icon cursor burns into game screen sometimes
 6. Collision handling for flea mode (yellow upgrade) is off, probably is impossible to continue without losing with it
