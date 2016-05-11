@@ -647,7 +647,7 @@ def gameLoop():
                 fail.play()
 
 
-	   
+        scoreAdded = False 
         while gameOver == True:
                        
             screen.fill(fill)
@@ -670,6 +670,9 @@ def gameLoop():
                             blue,
                             -200,
                             "large")
+            if(not scoreAdded):
+                database().addScore(score)		
+                scoreAdded = True
             message_to_screen("Game Over",
                             blue,
                             -50,
