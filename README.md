@@ -1,4 +1,4 @@
-# FlappyJayhawk
+# FlappyJayhawk :bowtie: :bowtie:  :bowtie:
 EECS 448 project 4 - "Flappy Jayhawk" on Pygame
 
 
